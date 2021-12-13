@@ -1,0 +1,35 @@
+= simple_form_for(@user) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    .row
+      .col.col-6
+        = f.input :name , label: 'Full Name', placeholder: 'Enter your name'
+
+      .col.col-6
+        = f.input :username , label: 'Username', placeholder: 'Enter your username'
+    .row
+      .col.col-6
+        = f.input :email , label: 'Email', placeholder: 'Enter your email'
+      .col.col-6
+        = f.input :phone , label: 'Phone Number', placeholder: 'Enter your number'
+    .row
+      .col.col-6
+        = f.input :password , label: 'Password' , placeholder: 'Enter your password'
+      .col.col-6
+        = f.input :password_confirmation , label: 'Comfirm Password' , placeholder: 'Confirm your password'
+    .row
+      .col
+        = f.input :address , label: 'Address', placeholder: 'Enter your address'
+
+
+    =f.input :gender, as: :radio_buttons, collection: ['male','female']
+
+
+
+  .form-actions
+    .row
+      .col.col-12
+        = f.button :submit ,'Register' ,{class:"btn mt-2",id:"btnSubmitRegister"}
+      -# %a{class:"btn btn-outline-secondary mt-2",value:"users_path" ,:href => users_path}Back to Login

@@ -1,0 +1,131 @@
+.container-fluid.mt-5
+  .row
+    .col.col-3
+      .row
+        .col-4
+
+        .col-8.mt-3
+          .row
+            .col-4
+              = image_tag @store.avatar , disabled:true ,class:"rounded-circle", style:"width:5rem;height:5rem;"
+            .col-8
+              %h5.fw-bold.mt-2.mb-0.pb-1
+                = @store.name
+              %a.nav-link.p-0.ps-2#btn-edit-profile-store
+                %i.bi.bi-pencil.fs-6
+                Edit Profile Store
+            %hr.mt-2#underline-profile-store-left
+
+            %ul.nav.flex-column.fs-6
+              %li.nav-item
+                %a.nav-link#my-profile-store{ }
+                  %i.bi.bi-person#person-icon
+                  My profile store
+                %div.ms-5#nav-tab-profile-store
+                  %ul.nav.flex-column.fs-6
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store{} Profile
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store{ } Address
+
+
+              %li.nav-item
+                %a.nav-link#my-store{ }
+                  %i.bi.bi-shop#store-icon
+                  My store
+                %div.ms-5#nav-tab-my-store
+                  %ul.nav.flex-column.fs-6
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store#nav-tab-my-product{href:"/shop/#{@store.id}"} View my store
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store#nav-tab-my-product{} My product
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store#nav-tab-sale-record{ } Sale record
+                    %li.nav-item
+                      %a.nav-link.tab-profile-store#nav-tab-add-product{ } Add product
+
+    .col.col-9
+      .row#detail-profile-store
+        .col.col-10#block-profile-store.ms-2
+          %div.mt-4.ms-3
+            %h3 My Profile Store
+            %p.fs-6 Manage and protect your store
+            %hr#underline-profile-store-right
+
+          = simple_form_for(@store,method: :patch, url: "/stores/#{@store.id}") do |f|
+            = f.error_notification
+            = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+            .form-inputs
+              .row
+                .col.col-8.ps-5#block-profile-store-second
+                  = f.input :name , label: 'Full Name', placeholder: 'Enter your name' ,input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :store_name , label: 'Store Name', placeholder: 'Enter your store name' ,input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :phone , label: 'Phone Number', placeholder: 'Enter your number',input_html: { class: 'text-field-edit-profile-info' }
+
+                .col.col-4{style:"height:250px;position:relative"}
+                  = image_tag @store.avatar , disabled:true ,class:"rounded-circle", style:"width:5rem;height:5rem;position:absolute;top:60px;left:150px"
+                  %label.btn.btn-warning{style:"position:absolute;top:155px;left:130px;color:white"}
+                    Select Image
+                    %span{style:"display:none;"}
+                      = f.file_field :avatar
+
+            .form-actions
+              = f.button :submit ,'Save' ,{class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-profile-store"}
+
+      .row#detail-my-store
+        =render(:partial => "showMyProduct" , :locals => {:@store=>@store,:@product=>@product })
+
+
+
+
+
+
+:javascript
+  $(document).ready(function(){
+
+    $("#detail-profile-store").hide();
+    $("#nav-tab-profile-store").hide();
+    $("#block-detail-sale-record").hide();
+
+    $("#my-store").click(function(){
+      $("#detail-my-store").show(500);
+      $("#nav-tab-my-store").show(500);
+      $("#nav-tab-profile-store").hide(500);
+      $("#detail-profile-store").hide(500);
+    })
+
+    $("#nav-tab-sale-record").click(function(){
+      $("#nav-tab-profile-store").hide(500);
+      $("#detail-profile-store").hide();
+      $("#block-detail-my-product").hide();
+      $("#detail-my-store").show(500);
+      $("#nav-tab-my-store").show(500);
+      $("#block-detail-sale-record").show(500);
+
+
+    })
+    $("#my-profile-store").click(function(){
+      $("#nav-tab-profile-store").show(500);
+      $("#detail-profile-store").show(500);
+      $("#detail-my-store").hide(500);
+      $("#nav-tab-my-store").hide(500);
+    })
+
+    $("#btn-edit-profile-store").click(function(){
+      $("#nav-tab-profile-store").show(500);
+      $("#detail-profile-store").show(500);
+      $("#detail-my-store").hide(500);
+      $("#nav-tab-my-store").hide(500);
+    })
+
+    $("#nav-tab-my-product").click(function(){
+      $("#detail-my-store").show(500);
+      $("#nav-tab-my-store").show(500);
+      $("#block-detail-my-product").show(500);
+      $("#nav-tab-profile-store").hide(500);
+      $("#detail-profile-store").hide();
+      $("#block-detail-sale-record").hide();
+    })
+
+
+  })

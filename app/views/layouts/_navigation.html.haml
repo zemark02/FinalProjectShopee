@@ -1,0 +1,28 @@
+%nav.navbar.navbar-expand-sm.navbar-light#nav-bar
+  / Content
+  .container-fluid
+    / Brand
+    %a.navbar-brand#nav-band{:href => "/feed/#{session[:user_id]}"} shop
+    %button.navbar-toggler{"data-bs-target" => "#navbarToggle", "data-bs-toggle" => "collapse"}
+      %span.navbar-toggler-icon
+    / Menu
+    #navbarToggle.collapse.navbar-collapse
+      %ul.navbar-nav
+        %li.nav-item
+          %a.nav-link{:href => "/feed/#{session[:user_id]}"}Home
+        %li.nav-item
+          %a.nav-link{href:"/profile/#{session[:user_id]}"} Profile
+        -# %li.nav-item
+        -#   %a.nav-link{:href => "/follow/#{session[:user_id]}"}Follow
+        %li.nav-item
+          %a.nav-link{:href => "/myStore/#{session[:user_id]}"}Sell
+        %li.nav-item
+          %a.nav-link{:href => "/cart/#{session[:user_id]}"}Cart
+        %li.nav-item
+          %form.d-flex{action:"/search"}
+            %input.form-control.me-2#search-nav-bar{:placeholder => "search product", :type => "text",name:"name"}
+            %input.btn#btn-submit-nav-search{:type => "submit", :value => "search"  }
+
+    %ul.navbar-nav#nav-logout
+      %li.nav-item
+        %a.nav-link.c{href:'/login'}logout

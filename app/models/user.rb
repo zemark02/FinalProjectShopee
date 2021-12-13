@@ -1,0 +1,110 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  address         :string(255)
+#  birthdate       :date
+#  email           :string(255)
+#  gender          :string(255)
+#  name            :string(255)
+#  password_digest :string(255)
+#  phone           :string(255)
+#  username        :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+class User < ApplicationRecord
+  has_one_attached :avatar
+  has_secure_password
+
+  has_one :store
+  has_many :orders
+
+  has_many :match_followees ,foreign_key: :followee_id , class_name:"Follow"
+  has_many :followings ,through: :match_followees
+
+  has_one :cart ,class_name:"Cart"
+
+
+
+  # validates :name, :email, :password, presence: true , length: { minimum: 2 }
+  validates :password, confirmation: { case_sensitive: true }
+
+
+  def check_email
+    if(User.find_by_email(self.email))
+      errors.add(:email, "already exists")
+      return false
+    end
+    return true
+  end
+
+  def check_username
+    if(User.find_by_username(self.username))
+      errors.add(:username, "already exists")
+      return false
+    end
+    return true
+  end
+
+
+  def login
+    @user = User.find_by_username(self.username)
+    if(@user)
+      if(@user.authenticate(self.password))
+        self.id = @user.id
+        return true
+      else
+        errors.add(:username)
+        errors.add(:password)
+        false
+      end
+    else
+      errors.add(:username)
+      errors.add(:password)
+      false
+    end
+  end
+
+  def getProductFromStoreFollowing
+    query = <<-SQL
+    SELECT t.tagname , p.id , p.name ,p.price,p.description,p.quantity,p.updated_at
+    FROM products p , has_tags ht , tags t , follows f
+    WHERE p.id = ht.product_id and ht.tag_id = t.id and f.following_id = p.store_id and "#{self.id}" = f.followee_id
+    order by t.tagname
+    SQL
+
+    result = ActiveRecord::Base.connection.execute(query)
+
+    arr = result.to_a
+    result = Hash.new
+    (0..arr.count-1).to_a.each do |index|
+      arr[index][arr[index].count-1] = arr[index].last.strftime("%B #{arr[index].last.day.ordinalize}, %Y")
+    end
+    arr.each do |res|
+      if(result.has_key?res[0])
+        result[res[0]].push(res[1..])
+      else
+        result[res[0]] = [res[1..]]
+      end
+    end
+
+    return result
+  end
+
+  def getProductFromCart
+    query = <<-SQL
+    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart
+    FROM products product , carts cart , contains contain
+    WHERE "#{self.id}" = cart.user_id AND contain.cart_id = cart.id AND contain.product_id = product.id
+
+    SQL
+
+    result = ActiveRecord::Base.connection.execute(query)
+    arr = result.to_a
+    return arr
+
+  end
+
+end

@@ -1,0 +1,37 @@
+.card-fav-list:hover{
+  text-decoration:none;
+  color:black;
+}
+
+.card-fav-list{
+  text-decoration:none;
+  color:black;
+}
+
+.card-img{
+  margin-top: 10px;
+  width:13rem;
+  height:10rem;
+  align-self: center
+}
+body{
+  background-color: #fafafa;
+}
+
+.card-footer{
+  background: white;
+  color: rgb(238, 77, 45);
+}
+.card-text{
+  height: 54px;
+}
+.card:hover{
+  box-shadow: 0 0 0 .2rem orange;
+}
+.text-card-title-otherShop{
+  color: #0088ff !important;
+  font-weight: 600 !important;
+}
+#detail-feed{
+  background-color: white;
+}

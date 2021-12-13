@@ -1,0 +1,117 @@
+.col.col-10.border.border-1#block-detail-my-product.ms-2
+  .btn.btn-lg.mt-4.ms-2.btn-add-product{href:"#" ,"data-bs-target":"#showFormAddProduct", "data-bs-toggle":"modal"} Add Product
+  %hr
+  -if(@store.products.count != 0)
+    %table.table.table-hover
+      %thead
+        %tr
+          %th.fs-6.text-center.pb-3{:scope => "col"} #
+          %th.fs-6.text-center.pb-3{:scope => "col"} Picture products
+          %th.fs-6.text-center.pb-3{:scope => "col"} Product name
+          %th.fs-6.text-center.pb-3{:scope => "col"} Price (Baht)
+          %th.fs-6.text-center.pb-3{:scope => "col"} Quantity remaining
+          %th.fs-6.text-center.pb-3{:scope => "col"} Product description
+          %th.fs-6.text-center.pb-3{:scope => "col"}
+
+          %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Actions
+      %tbody
+        - c = 1
+        -@store.products.each do |p|
+          %tr
+            %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
+              = c
+            %td.fs-6.text-center.align-middle.p-4
+              -p.img_products.all.each do |img|
+                =image_tag img , style:"width:7rem;height:7rem;"
+            %td.fs-6.text-center.align-middle.p-4
+              =p.name
+            %td.fs-6.text-center.align-middle.p-4
+              =p.price
+            %td.fs-6.text-center.align-middle.p-4
+              -if(p.quantity == 0)
+                ="out of stock"
+              -else
+                =p.quantity
+            %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
+              =p.description
+
+            %td.fs-6.text-center.align-middle.p-4.pe-5
+              = "..."
+            -c = c + 1
+  -else
+    %h3.text-center.mt-5.mb-5 No have Product
+
+.col.col-10.border.border-1#block-detail-sale-record.ms-2
+  %p.fs-2.mt-4.ms-3.mb-4 Sale Record
+  %hr.mb-4
+  -if(@saleRecord.count != 0)
+    %table.table.table-hover
+      %thead
+        %tr
+          %th.fs-6.text-center.pb-3{:scope => "col"} #
+          %th.fs-6.text-center.pb-3{:scope => "col"} Picture products
+          %th.fs-6.text-center.pb-3{:scope => "col"} Product name
+          %th.fs-6.text-center.pb-3{:scope => "col"} Price (Baht)
+          %th.fs-6.text-center.pb-3{:scope => "col"} Product description
+          %th.fs-6.text-center.pb-3{:scope => "col"}
+          %th.fs-6.text-center.pb-3{:scope => "col"} All sold
+
+
+
+      %tbody
+        - c = 1
+        -@saleRecord.each do |p_id , sold|
+          -@product2 = Product.find(p_id)
+          %tr
+            %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
+              = c
+            %td.fs-6.text-center.align-middle.p-4
+              -@product2.img_products.all.each do |img|
+                =image_tag img , style:"width:7rem;height:7rem;"
+            %td.fs-6.text-center.align-middle.p-4
+              =@product2.name
+            %td.fs-6.text-center.align-middle.p-4
+              =@product2.price
+            %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
+              =@product2.description
+            %td.fs-6.text-center.align-middle.p-4
+              =sold
+
+
+            -c = c + 1
+  -else
+    %h3.text-center.mt-5.mb-5 No Orders yet
+
+
+
+
+%div.modal.fade#showFormAddProduct
+  %div.modal-dialog
+    %div.modal-content
+      %div.modal-header
+        %h5.modal-title Add Product
+        %btn.btn-close{"data-bs-dismiss":"modal"}
+      %div.modal-body
+        %div.form-group
+          = simple_form_for(@product, method: :post, url: "/products") do |f|
+            .form-inputs
+              = f.association :store,selected:@store.id ,input_html: { hidden: true },label:false
+              = f.input :name ,class:"form-control"
+              = f.input :price ,class:"form-control"
+              = f.input :quantity ,class:"form-control"
+              = f.input :description ,class:"form-control" , as: :text,input_html:{class:"description-text-area"}
+              = f.label :img_products ,"Select picture products"
+              = f.file_field :img_products ,class:"form-control mt-0 mb-2" ,multiple:true
+
+              = f.input :tags , as: :radio_buttons, collection: ['Food','Electronic','Vehicle','Fashion','Health & Beauty','Voucher','other']
+
+
+            .form-actions
+              = f.button :submit ,"Add Product" ,class:"btn btn-modal-create-product mt-2"
+
+:javascript
+  $(document).ready(function(){
+    $("#nav-tab-add-product").click(function(){
+      $(".btn-add-product").focus().click();
+    })
+  })

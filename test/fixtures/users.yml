@@ -1,0 +1,46 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  address         :string(255)
+#  birthdate       :date
+#  email           :string(255)
+#  gender          :string(255)
+#  name            :string(255)
+#  password_digest :string(255)
+#  phone           :string(255)
+#  username        :string(255)
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+userOne:
+  username: admin
+  email: admin
+  name: admin
+  address: admin
+  phone: admin
+  gender: admin
+  birthdate:
+  password_digest: <%= BCrypt::Password.create('admin') %>
+
+userTwo:
+  username: admin2
+  email: admin2
+  name: admin2
+  address: admin2
+  phone: admin2
+  gender: admin2
+  birthdate:
+  password_digest: <%= BCrypt::Password.create('admin2') %>
+
+userThree:
+  username: username
+  email: username
+  name: username
+  address: username
+  phone: username
+  gender: username
+  birthdate:
+  password_digest: <%= BCrypt::Password.create('username') %>

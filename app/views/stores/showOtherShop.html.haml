@@ -1,0 +1,87 @@
+.container-fluid#shop-container-fluid
+  .row.pt-4.pb-4#block-info-shop.border.border-1
+    .col.col-2
+
+    .col.col-3.border.border-1#div-profile-otherShop{style:"height:150px"}
+      .row
+        .col.col-4
+          =image_tag @otherShop.avatar , disabled:true ,class:"rounded-circle border border-1 mt-4 ms-3", style:"width:5rem;height:5rem;"
+        .col.col-8
+          %h3.mt-4.text-light
+            =@otherShop.name
+          -if(@check_following)
+            = button_to setFollow_url, method: :post ,class:"btn btn-warning btn-lg" ,params: { checkFollow:@check_following,shopId:@otherShop.id } do
+              %span.bi.bi-person-check{style:"font-size:20px"}
+                Following
+          -elsif(session[:user_id] == @otherShop.user_id)
+            .btn.btn-warning#btn-my-store
+              %span.bi.bi-shop{style:"font-size:20px"}
+                My Store
+          -else
+            = button_to setFollow_url, method: :post ,class:"btn btn-light btn-lg" ,params: { checkFollow:@check_following,shopId:@otherShop.id } do
+              %span{style:"font-size:20px"}
+              + Follow
+
+
+    .col.col-7
+      .row.mt-4
+        .col.col-1
+        .col.col-3{style:"line-height:45px;"}
+          %span
+            .bi.bi-shop.detail-profile-othershop.fs-3
+              %span.fs-6.ms-2.label-detail-profile-otherShop
+                = "Product : "
+                %span.value-detail-profile-othershop
+                  = @otherShop.products.count
+          %span
+            .bi.bi-people-fill.fs-3.detail-profile-othershop
+              %span.fs-6.ms-2.label-detail-profile-otherShop
+                = "Follower : "
+                %span.value-detail-profile-othershop
+                  = @otherShop.followees.count
+
+
+
+        .col.col-4{style:"line-height:45px;"}
+          %span
+            .bi.bi-star-fill.fs-3.detail-profile-othershop
+              %span.fs-6.ms-2.label-detail-profile-otherShop
+                = "Rating : "
+                %span.value-detail-profile-othershop
+                  = @getScoreShop
+          %span
+            .bi.bi-calendar-check.fs-3.detail-profile-othershop
+              %span.fs-6.ms-2.label-detail-profile-otherShop
+                = "Joined : "
+                %span.value-detail-profile-othershop
+                  = "#{@otherShop.created_at.strftime('%-d %b %Y')}"
+        .col.col-4
+  .container-fluid.mt-3
+    .row
+      .col-1
+      .col-10#detail-product-otherShop
+        -@getTagAndProduct.each_key do |tag|
+          %hr
+          %h2.mt-4.mb-4.ms-3
+            =tag
+          %hr
+          -index = 0
+          -while index < @getTagAndProduct[tag].count
+            .row.mt-3
+              -@getTagAndProduct[tag][index..index+5].each do |product|
+                .col.col-2
+                  %a.card-fav-list{href:"/product/#{product[0]}"}
+                    .card
+                      -Product.find(product[0]).img_products.all.each do |img|
+                        =image_tag(img,class:"img card-img-top card-img")
+                      .card-body
+                        %h6.text-card-title-otherShop.card-title
+                          = product[1]
+                        %p.card-text
+                          =product[3]
+                      .card-footer
+                        %h5
+                          =product[2]
+                          =" Baht"
+            -index = index + 6
+          .col-1

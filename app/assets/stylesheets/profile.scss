@@ -1,0 +1,146 @@
+#btn-edit-profile{
+  color:#888;
+}
+#btn-edit-profile:hover{
+  cursor:pointer;
+  color: #ee4d2d;
+}
+
+.nav-link{
+  color: black;
+}
+
+.nav-link:hover{
+  color: #ee4d2d;
+}
+#underline-profile-left{
+  height:1px;
+  color:#c4c4c4;
+}
+
+#person-icon ,#cash-icon{
+  color:#0088ff;
+  font-size: 1.6rem;
+  margin-right: 5px;
+}
+.tab-profile{
+  color:rgba(0,0,0,.65) !important;
+
+}
+
+.tab-profile:hover{
+  color: #ee4d2d !important;
+
+}
+
+#underline-profile-right{
+  color: #9e9d9d !important;
+}
+
+#block-profile ,#block-purchase{
+  background: white;
+}
+
+.text-field-edit-profile-info{
+  margin-bottom: 16px;
+
+}
+
+.text-field-edit-profile-info:valid{
+  background-image: none !important;
+  border:1px solid #ced4da !important;
+}
+.text-field-edit-profile-info:focus{
+  border-color :orange !important;
+  box-shadow: 0 0 0 .2rem orange !important;
+}
+input[class="form-control is-valid string email optional text-field-edit-profile-info"]{
+  background-image: none !important;
+  border:1px solid #ced4da !important;
+}
+
+
+
+
+.label-email-edit-profile{
+  margin-top: 30px;
+  padding:10px;
+}
+input[class="form-check-input radio_buttons optional text-field-edit-profile-info"]:focus{
+  box-shadow: none !important;
+}
+
+
+
+#block-profile .form-inputs .row .col .form-check-label{
+  margin-top:  0.7em;
+}
+
+#btn-save-edit-profile{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+}
+
+#block-profile-second{
+  border-right: 1px solid #f0f0f0;
+}
+
+#block-profile input[id="user_avatar"]{
+  width:250px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.nav-link-my-purchase{
+  font-size: 1.2rem;
+  color:rgba(0,0,0,.8);
+}
+
+.click-to-rate{
+  color:orange !important;
+}
+.click-to-rate:hover{
+  color: #ee4d2d !important;
+  cursor: pointer;
+}
+
+
+textarea:focus{
+  border-color: orange;
+  box-shadow: 0 0 0 .2rem orange !important;
+}
+
+.rating{
+  display: none !important;
+}
+.rating-css label{
+  color: orange;
+  cursor: pointer;
+}
+
+.rating-css input:checked + label ~label{
+  color: #e0e0e0 !important;
+}
+
+.btn-comment{
+  background: #ee4d2d;
+  color :white;
+  border:1px solid orange;
+}
+
+.btn-comment:hover{
+  color:white;
+
+}
+textarea:focus{
+  border-color: orange !important;
+}
+
+#completed:hover{
+  color:#adadad !important;
+}
+#completed{
+  color:#adadad !important;
+}

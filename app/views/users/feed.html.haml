@@ -1,0 +1,32 @@
+.container-fluid.mt-3
+  .row
+    .col-1
+    .col-10#detail-feed
+      -if(@getTagAndProduct.count != 0)
+        -@getTagAndProduct.each_key do |tag|
+          %hr
+          %h2.mt-4.mb-4.ms-3
+            =tag
+          %hr
+          -index = 0
+          -while index < @getTagAndProduct[tag].count
+            .row.mt-3
+              -@getTagAndProduct[tag][index..index+5].each do |product|
+                .col.col-2
+                  %a.card-fav-list{href:"/product/#{product[0]}"}
+                    .card
+                      -Product.find(product[0]).img_products.all.each do |img|
+                        =image_tag(img,class:"img card-img-top card-img")
+                      .card-body
+                        %h6.text-card-title-otherShop.card-title
+                          = product[1]
+                        %p.card-text
+                          =product[3]
+                      .card-footer
+                        %h5
+                          =product[2]
+                          =" Baht"
+            -index = index + 6
+      -else
+        %h3.text-center.mt-5.mb-5 No Have Following Store
+    .col-1

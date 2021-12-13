@@ -1,0 +1,192 @@
+
+.container-fluid.mt-5
+  .row
+    .col.col-3
+      .row
+        .col-4
+
+        .col-8.mt-3
+          .row
+            .col-4
+              = image_tag @user.avatar , disabled:true ,class:"rounded-circle", style:"width:5rem;height:5rem;"
+            .col-8
+              %h5.fw-bold.mt-2.mb-0.pb-1
+                = User.find(session[:user_id]).name
+              %a.nav-link.p-0.ps-2#btn-edit-profile
+                %i.bi.bi-pencil.fs-6
+                Edit Profile
+            %hr.mt-2#underline-profile-left
+
+            %ul.nav.flex-column.fs-6
+              %li.nav-item
+                %a.nav-link#my-account{ }
+                  %i.bi.bi-person#person-icon
+                  My account
+                %div.ms-5#nav-tab-profile
+                  %ul.nav.flex-column.fs-6
+                    %li.nav-item
+                      %a.nav-link.active.tab-profile{"aria-current" => "page", :href => "#"} Profile
+                    %li.nav-item
+                      %a.nav-link.tab-profile{ } Address
+                    %li.nav-item
+                      %a.nav-link.tab-profile{ } Change password
+
+              %li.nav-item
+                %a.nav-link#my-purchase{ }
+                  %i.bi.bi-cash#cash-icon
+                  My purchase
+
+
+
+    .col.col-9
+      .row#detail-profile
+        .col.col-10#block-profile.ms-2
+          %div.mt-4.ms-3
+            %h3 My Profile
+            %p.fs-6 Manage and protect your account
+            %hr#underline-profile-right
+          = simple_form_for(@userEdit,method: :patch, url: "/users/#{session[:user_id]}") do |f|
+            = f.error_notification
+            = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+            .form-inputs
+              .row
+                .col.col-8.ps-5#block-profile-second
+                  = f.input :name , label: 'Full Name', placeholder: 'Enter your name' ,input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :username , label: 'Username', placeholder: 'Enter your username',input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :email ,label: 'Email',placeholder: 'Enter your email' ,input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :phone , label: 'Phone Number', placeholder: 'Enter your number',input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :birthdate , label: 'Birthdate',input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :gender, as: :radio_buttons, collection: ['male','female'],input_html: { class: 'text-field-edit-profile-info' } ,label_html:{class:"label-email-edit-profile"}
+                .col.col-4{style:"height:400px;position:relative"}
+                  = image_tag @user.avatar , disabled:true ,class:"rounded-circle", style:"width:5rem;height:5rem;position:absolute;top:100px;left:150px"
+                  %label.btn.btn-warning{style:"position:absolute;top:195px;left:130px;color:white"}
+                    Select Image
+                    %span{style:"display:none;"}
+                      = f.file_field :avatar
+
+            .form-actions
+              = f.button :submit ,'Save' ,{class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-profile"}
+
+      .row#detail-my-purchase
+        .col.col-10.border.border-1#block-purchase.ms-2
+          .row
+            %h3.mt-4.ms-3.mb-4 My purchase
+
+            %hr.mb-4
+
+            .col-12
+              -if(@user.orders.count != 0)
+                %table.table.table-hover
+                  %thead
+                    %tr
+                      %th.fs-6.text-center.pb-3{:scope => "col"} #
+                      %th.fs-6.text-center.pb-3{:scope => "col"} Picture products
+                      %th.fs-6.text-center.pb-3{:scope => "col"} Product name
+                      %th.fs-6.text-center.pb-3{:scope => "col"} Product description
+                      %th.fs-6.text-center.pb-3{:scope => "col"}
+                      %th.fs-6.text-center.pb-3{:scope => "col"} Quantity
+                      %th.fs-6.text-center.pb-3{:scope => "col"} Price (Baht)
+                      %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Date
+                      %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Cick to rate
+                  %tbody
+                    - c = 1
+                    -@user.orders.each do |order|
+                      -order.match_order_line_items.each do |order_line_item|
+                        %tr
+                          %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
+                            = c
+                          %td.fs-6.text-center.align-middle.p-4
+                            -order_line_item.product.img_products.all.each do |img|
+
+                              =image_tag img , style:"width:7rem;height:7rem;"
+                          %td.fs-6.text-center.align-middle.p-4
+                            =order_line_item.product.name
+                          %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
+                            =order_line_item.product.description
+                          %td.fs-6.text-center.align-middle.p-4
+                            =order_line_item.quantity
+                          %td.fs-6.text-center.align-middle.p-4
+                            =order_line_item.price
+
+                          %td.fs-6.text-center.align-middle.p-4.pe-5
+                            = order_line_item.order.created_at.strftime('%-d %b %Y')
+
+                          %td.fs-6.text-center.align-middle.p-4.pe-5
+                            -if(order_line_item.match_rate == nil)
+                              .nav-link.fs-6.p-0.click-to-rate{"data-bs-target":"#showFormCommentProduct", "data-bs-toggle":"modal" ,"product-id":order_line_item.product.id ,"order_line_item_id":order_line_item.id,"order-id":order_line_item.order_id  } click to rate
+                            -else
+                              .nav-link.fs-6.p-0#completed
+                                ="completed"
+                          -c = c + 1
+
+              -else
+                %h3.text-center.mt-5.mb-5 No orders yet
+
+%div.modal.fade#showFormCommentProduct
+  %div.modal-dialog
+    %div.modal-content
+      %div.modal-header
+        %h5.modal-title Rate
+        %btn.btn-close{"data-bs-dismiss":"modal"}
+      %div.modal-body
+        %div.form-group{style:"line-height:36px;"}
+          = form_with url: "/rate", method: :post do |form|
+            %div.rating-css.text-center
+              %input.rating{type:"radio" ,name:"rating1",id:"rating1",class:"checked",value:1}
+              %label.fa.fa-star{for:"rating1",style:"font-size:40px"}
+              %input.rating{type:"radio",name:"rating1",id:"rating2",display:"none !important;",value:2}
+              %label.fa.fa-star{for:"rating2",style:"font-size:40px"}
+              %input.rating{type:"radio",name:"rating1",id:"rating3",display:"none !important;",value:3}
+              %label.fa.fa-star{for:"rating3",style:"font-size:40px"}
+              %input.rating{type:"radio",name:"rating1",id:"rating4",display:"none !important;",value:4}
+              %label.fa.fa-star{for:"rating4",style:"font-size:40px"}
+              %input.rating{type:"radio",name:"rating1",id:"rating5",display:"none !important;",value:5 ,checked:true}
+              %label.fa.fa-star{for:"rating5",style:"font-size:40px"}
+
+            %label{for:"comment"}
+              comment
+            %textarea.form-control{ :name => "comment",id:"comment"}
+
+            %input#product-id-click-rate{:name=>"product_id",type:"hidden",value:"none",}
+            %input#order-line-item-id{:name=>"order_line_item_id",value:"none",type:"hidden"}
+
+            =button_tag(type: 'submit', class: "btn btn-comment mt-4 ") do
+              ="Comment"
+
+
+
+
+:javascript
+
+  $(document).ready(function(){
+
+    $(".click-to-rate").click(function(){
+      var product_id = $(this).attr("product-id");
+      var order_line_item_id = $(this).attr("order_line_item_id");
+      $("#product-id-click-rate").attr("value",product_id);
+      $("#order-line-item-id").attr("value",order_line_item_id);
+
+    })
+
+    $("#detail-my-purchase").hide();
+
+    $("#my-purchase").click(function(){
+      $("#nav-tab-profile").hide(500);
+      $("#detail-profile").hide(500);
+      $("#detail-my-purchase").show(500);
+    })
+    $("#my-account").click(function(){
+      $("#nav-tab-profile").show(500);
+      $("#detail-profile").show(500);
+      $("#detail-my-purchase").hide(500);
+    })
+
+    $("#btn-edit-profile").click(function(){
+      $("#nav-tab-profile").show(500);
+      $("#detail-profile").show(500);
+      $("#detail-my-purchase").hide(500);
+    })
+
+
+
+  })

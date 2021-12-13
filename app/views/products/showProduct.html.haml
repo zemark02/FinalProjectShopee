@@ -1,0 +1,222 @@
+.container-fluid#body-show-product
+  .row.mt-5
+    .col.col-1
+    .col.col-10#detail-all-product.pt-4
+      .row
+        .col-4
+          -@product.img_products.all.each do |img|
+            =image_tag(img,style:"height:35rem;width:30rem;",class:"ms-2 mt-2 ")
+        .col-7.ms-3#detail-product-show-product
+          %h1.mt-4.mb-2
+            =@product.name
+          %span.ms-2.p-1.bi.bi-star-fill.fs-5.detail-profile-othershop#span-product-rating
+            %span.fs-6.ms-2.label-detail-profile-otherShop
+              = "Rating : "
+              %span.value-detail-profile-othershop
+                = @score
+          %span.ms-2.p-1.pe-2.bi.bi-cart-check-fill.fs-5.detail-profile-othershop#span-product-sold
+            %span.fs-6.ms-2.label-detail-profile-otherShop
+              = "Sold : "
+              %span.value-detail-profile-othershop
+                = @sold
+          %span.ms-2.p-1.pe-2.bi.bi-chat-left-text-fill.fs-5.detail-profile-othershop
+            %span.fs-6.ms-2.label-detail-profile-otherShop
+              = "Comment : "
+              %span.value-detail-profile-othershop
+                = @numComment
+          %h2.mt-4.p-4#price-show-product
+            =@product.price
+            =" Baht"
+
+          .row.mt-4
+            .col-2.ms-3.pt-1
+              .fs-5 description:
+            .col-9
+              .fs-5{style:"color:rgba(0, 0, 0, 0.55) !important;ps-0;line-height:28px"}
+                = "#{@product.description}"
+
+          .row.mt-4
+            .col-2.ms-3.pt-1
+              .fs-5 Quantity:
+            .col-9
+              -if(@product.quantity != 0)
+                = form_with url: "/updateCart", method: :post do |form|
+                  %row.ms-0
+                    .col-5
+                    .col-2
+                      .btn-group.border
+                        .btn.btn-light#btn-minus{style:"width:60px !important;"} -
+                        %input#quantity.form-control.input-number{:max => @product.quantity, :min => "1", :name => "quantity", :type => "text", :value => "1" ,readonly:true}/
+
+                        %input{:name=>"product_id",type:"text",value:@product.id,type:"hidden"}
+                        .btn.btn-light#btn-plus +
+                    %div.text-muted.mt-2
+                      ="#{@product.quantity}"
+                      ="piece available"
+                    =button_tag(type: 'submit', class: "btn btn-add-cart mt-4") do
+                      %bi.bi-cart-plus{style:"font-size:20px"}
+                        Add To Cart
+
+              -else
+                %p.fs-5.mt-1{style:"color:#ee4d2d;"}
+                  out of stock
+
+
+
+
+        .col-1
+    .col.col-1
+  .row
+    .col-1
+    .col-10{style:"height:40px;background-color:white ;"}
+    .col-1
+
+
+%br
+%br
+
+.container-fluid
+  .row
+    .col-1
+    .col-10.border.border-1{style:"background-color:white;height:150px;"}
+      .row
+        .col-4.pt-3.pb-3.ps-5
+          .row#div-profile-otherShop{style:"height:120px;width:24rem;"}
+            .col.col-4
+              %a{href:"/shop/#{@store.id}"}
+                =image_tag @store.avatar , disabled:true ,class:"rounded-circle border border-1 mt-4 ms-3", style:"width:4rem;height:4rem;"
+            .col.col-8
+              %a{href:"/shop/#{@store.id}",style:"text-decoration:none !important;"}
+                %h3.mt-4.text-light
+                  =@store.name
+              -if(@following)
+                = button_to setFollow_url, method: :post ,class:"btn btn-warning " ,params: { checkFollow:@following,shopId:@store.id } do
+                  %span.bi.bi-person-check{style:"font-size:10px"}
+                    Following
+              -elsif(session[:user_id] == @store.user_id)
+                .btn.btn-warning#btn-my-store
+                  %span.bi.bi-shop{style:"font-size:20px"}
+                    My Store
+              -else
+                = button_to setFollow_url, method: :post ,class:"btn btn-light " ,params: { checkFollow:@following,shopId:@store.id } do
+                  %span{style:"font-size:10px"}
+                  + Follow
+        .col-7
+          .row.mt-4
+            .col.col-1
+            .col.col-5{style:"line-height:45px;"}
+              %span
+                .bi.bi-shop.detail-profile-othershop.fs-3
+                  %span.fs-6.ms-2.label-detail-profile-otherShop
+                    = "Product : "
+                    %span.value-detail-profile-othershop
+                      = @store.products.count
+              %span
+                .bi.bi-people-fill.fs-3.detail-profile-othershop
+                  %span.fs-6.ms-2.label-detail-profile-otherShop
+                    = "Follower : "
+                    %span.value-detail-profile-othershop
+                      = @store.followees.count
+
+
+
+            .col.col-4{style:"line-height:45px;"}
+              %span
+                .bi.bi-star-fill.fs-3.detail-profile-othershop
+                  %span.fs-6.ms-2.label-detail-profile-otherShop
+                    = "Rating : "
+                    %span.value-detail-profile-othershop
+                      =@rateStore
+              %span
+                .bi.bi-calendar-check.fs-3.detail-profile-othershop
+                  %span.fs-6.ms-2.label-detail-profile-otherShop
+                    = "Joined : "
+                    %span.value-detail-profile-othershop
+                      = "#{@store.created_at.strftime('%-d %b %Y')}"
+    .col-1
+.container-fluid.mt-4
+  .row
+    .col-1
+    .col-7{style:"background:white"}
+      %h2.p-5.pb-2 Comment
+      %hr
+      -@order_line_items.each do |olt|
+        -rate = olt.match_rate
+        -if(rate != nil)
+          -@user = User.find(rate.user_id)
+          .row
+            .col-2.text-end
+              =image_tag @user.avatar ,class:"rounded" ,style:"width:5rem;height:5rem"
+            .col-10
+              %div.fs-4.mt-2.mb-2{style:"line-hight:10px "}
+                =@user.name
+              -if(rate.rate_score == 1)
+                %div.fs-4.mb-2
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+              -if(rate.rate_score == 2)
+                %div.fs-4.mb-2
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+              -if(rate.rate_score == 3)
+                %div.fs-4.mb-2
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star.fs-5
+                  %span.bi.bi-star.fs-5
+              -if(rate.rate_score == 4)
+                %div.fs-4.mb-2
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star.fs-5
+              -if(rate.rate_score == 5)
+                %div.fs-4.mb-2
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+                  %span.bi.bi-star-fill.fs-5.text-warning
+              %div.text-muted.fs-4
+                %p.bi.bi-clock
+                  =rate.created_at.strftime('%-d %b %Y')
+
+          .row
+            .col-2
+            .col-10
+              %p.fs-5.mt-2
+                =rate.comment
+          %hr
+    .col-4
+
+:javascript
+  $(document).ready(function(event){
+    $("#btn-plus").click(function(){
+      val = parseInt($("#quantity").attr("value"))+1;
+      max = parseInt($("#quantity").attr("max"))
+      console.log(val)
+      console.log(max)
+      if(val > max ) val = max
+      $("#quantity").prop("readonly",false)
+      $("#quantity").attr("value",val)
+      $("#btn-plus").blur();
+      $("#quantity").prop("readonly",true)
+
+    })
+    $("#btn-minus").click(function(event){
+      val = parseInt($("#quantity").attr("value")) -1;
+      if (val == 0) val = 1
+      $("#quantity").prop("readonly",false)
+      $("#quantity").attr("value",val)
+      $("#btn-minus").blur();
+      $("#quantity").prop("readonly",true)
+    })
+  })

@@ -1,0 +1,28 @@
+.container-fluid.mt-3
+  .row
+    .col-1
+    .col-10#detail-product-search
+      %hr
+      %h2.mt-4.mb-4.ms-3
+        =@title
+      %hr
+      -index = 0
+      -while index < @product.count
+        .row.mt-3
+          -@product[index..index+5].each do |product|
+            .col.col-2
+              %a.card-fav-list{href:"/product/#{product.id}"}
+                .card
+                  -product.img_products.all.each do |img|
+                    =image_tag(img,class:"img card-img-top card-img")
+                  .card-body
+                    %h6.text-card-title-otherShop.card-title
+                      = product.name
+                    %p.card-text
+                      =product.description
+                  .card-footer
+                    %h5
+                      =product.price
+                      =" Baht"
+        -index = index + 6
+      .col-1

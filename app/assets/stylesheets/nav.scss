@@ -1,0 +1,41 @@
+#nav-bar{
+  background:linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  height:6rem;
+}
+
+#nav-band{
+  font-size: 50px;
+  color:white;
+  margin-left: 150px;
+}
+
+#navbarToggle ul li a {
+  font-size: 18px;
+  color: white;
+  margin-top: 10px;
+}
+
+#search-nav-bar{
+  width:56rem;
+  height: 3rem;
+
+}
+#nav-logout li a{
+  font-size: 18px;
+  color: white;
+}
+
+#search-nav-bar:focus{
+  box-shadow: none;
+  border-color: orange;
+}
+#btn-submit-nav-search{
+  background:  none;
+  color:white;
+  font-size: 18px;
+}
+
+#btn-submit-nav-search:hover{
+  background:  #ff6d12;
+  color:white;
+}

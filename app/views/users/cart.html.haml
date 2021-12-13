@@ -1,0 +1,64 @@
+.container-fluid#container-fluid-cart
+  .row
+    .col-1
+
+    .col-10.ms-2.mt-4{style:"background-color:white !important;"}
+      %h2.mt-4.mb-4.ms-3
+        My Cart
+        %hr
+
+        -if(@getProductFromCart.count != 0)
+          %table.table.table-hover
+            %thead
+              %tr
+                %th.fs-6.text-center.pb-3{:scope => "col"} #
+                %th.fs-6.text-center.pb-3{:scope => "col"} Picture products
+                %th.fs-6.text-center.pb-3{:scope => "col"} Product name
+                %th.fs-6.text-center.pb-3{:scope => "col"} Product description
+                %th.fs-6.text-center.pb-3{:scope => "col"}
+                %th.fs-6.text-center.pb-3{:scope => "col"} Quantity
+                %th.fs-6.text-center.pb-3{:scope => "col"} Price (Baht)
+
+
+                %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Actions
+            %tbody
+              - c = 1
+              -@getProductFromCart.each do |p|
+                %tr
+                  %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
+                    = c
+                  %td.fs-6.text-center.align-middle.p-4
+                    -Product.find(p[0]).img_products.all.each do |img|
+
+                      =image_tag img , style:"width:7rem;height:7rem;"
+                  %td.fs-6.text-center.align-middle.p-4
+                    =p[1]
+                  %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
+                    =p[2]
+                  %td.fs-6.text-center.align-middle.p-4
+                    =p[3]
+                  %td.fs-6.text-center.align-middle.p-4
+                    =p[4]
+
+                  %td.fs-6.text-center.align-middle.p-4.pe-5
+                    = "..."
+                  -c = c + 1
+          .row
+            .col-7
+            .col-3
+              %h3#total-cart.text-end.pt-2
+                Total :
+                = @sum
+                ="Baht"
+            .col-2
+              = button_to "check out", checkout_url, method: :post ,class:"btn ",id:"btn-check-out" ,params: { checkout:@checkout }
+
+
+
+
+
+        -else
+          %h3.text-center.mt-5.mb-5 Empty Cart
+
+
+    .col-1

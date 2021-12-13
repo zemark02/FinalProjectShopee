@@ -1,0 +1,175 @@
+#btn-edit-profile-store{
+  color:#888;
+}
+#btn-edit-profile-store:hover{
+  cursor:pointer;
+  color: #ee4d2d;
+}
+
+.nav-link{
+  color: black;
+}
+
+.nav-link:hover{
+  color: #ee4d2d;
+}
+#underline-profile-store-left{
+  height:1px;
+  color:#c4c4c4;
+}
+
+#person-icon ,#store-icon{
+  color:#0088ff;
+  font-size: 1.6rem;
+  margin-right: 5px;
+}
+.tab-profile-store{
+  color:rgba(0,0,0,.65) !important;
+
+}
+
+.tab-profile-store:hover{
+  color: #ee4d2d !important;
+
+}
+
+#underline-profile-store-right{
+  color: #9e9d9d !important;
+}
+
+#block-profile-store ,#block-detail-my-product,#block-detail-sale-record{
+  background: white;
+}
+
+.text-field-edit-profile-info{
+  margin-bottom: 16px;
+
+}
+
+.text-field-edit-profile-info:valid{
+  background-image: none !important;
+  border:1px solid #ced4da !important;
+}
+.text-field-edit-profile-info:focus{
+  border-color :orange !important;
+  box-shadow: 0 0 0 .2rem orange !important;
+}
+input[class="form-control is-valid string email optional text-field-edit-profile-info"]{
+  background-image: none !important;
+  border:1px solid #ced4da !important;
+}
+
+
+
+
+.label-email-edit-profile{
+  margin-top: 30px;
+  padding:10px;
+}
+input[class="form-check-input radio_buttons optional text-field-edit-profile-info"]:focus{
+  box-shadow: none !important;
+}
+
+
+
+#block-profile-store .form-inputs .row .col .form-check-label{
+  margin-top:  0.7em;
+}
+
+#btn-save-edit-profile-store{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+}
+
+#block-profile-store-second{
+  border-right: 1px solid #f0f0f0;
+}
+
+#block-profile-store input[id="user_avatar"]{
+  width:250px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.nav-link-my-store{
+  font-size: 1.2rem;
+  color:rgba(0,0,0,.8);
+}
+
+.btn-add-product{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+}
+
+.btn{
+  cursor: pointer;
+}
+.btn-add-product:hover{
+  color: white;
+}
+
+.btn-close{
+  cursor: pointer;
+}
+
+#showFormAddProduct{
+  line-height: 35px;
+}
+
+.btn-modal-create-product{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  width:465px;
+  text-align: center;
+  color:white;
+}
+
+.btn-modal-create-product:hover{
+  color:white;
+}
+
+.description-text-area:focus{
+  box-shadow: 0 0 0 .2rem orange !important;
+  border-color: orange;
+}
+
+.nav-link:focus{
+  color:orange;
+}
+
+.check-box-tag:focus{
+  box-shadow: none !important;
+  border:orange;
+  background-color: orange;
+
+}
+.check-box-tag:active{
+  box-shadow: none !important;
+  border:orange;
+  background-color: orange;
+
+}
+
+.check-box-tag{
+  cursor: pointer;
+}
+
+.abel-check-box-tag{
+  cursor: pointer;
+}
+
+#showFormAddProduct .check_boxes label{
+  cursor: pointer;
+}
+
+#showFormAddProduct .form-check input[class="form-check-input check_boxes optional check-box-tag"]:checked{
+  background: orange;
+  border:orange;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+#btn-my-store:hover{
+  cursor: default !important;
+
+}

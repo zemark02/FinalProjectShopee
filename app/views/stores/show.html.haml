@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @store.name
+%p
+  %b Rating:
+  = @store.rating
+%p
+  %b Store name:
+  = @store.store_name
+%p
+  %b Phone:
+  = @store.phone
+%p
+  %b Address store:
+  = @store.address_store
+%p
+  %b User:
+  = @store.user
+
+= link_to 'Edit', edit_store_path(@store)
+\|
+= link_to 'Back', stores_path
