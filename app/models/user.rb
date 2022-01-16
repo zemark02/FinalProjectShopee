@@ -142,7 +142,7 @@ class User < ApplicationRecord
     query = <<-SQL
     SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart,contain.id
     FROM products product , carts cart , contains contain
-    WHERE "#{self.id}" = cart.user_id AND contain.cart_id = cart.id AND contain.product_id = product.id
+    WHERE cart.user_id = #{self.id}  AND contain.cart_id = cart.id AND contain.product_id = product.id
 
     SQL
 

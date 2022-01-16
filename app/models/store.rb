@@ -32,7 +32,7 @@ class Store < ApplicationRecord
     query = <<-SQL
     SELECT t.tagname , p.id , p.name ,p.price,p.description,p.quantity,p.updated_at
     FROM products p , has_tags ht , tags t
-    WHERE p.id = ht.product_id and ht.tag_id = t.id and "#{self.id}" = p.store_id
+    WHERE p.id = ht.product_id and ht.tag_id = t.id and #{self.id} = p.store_id
     order by t.tagname
     SQL
     # result = Product.find_by_sql(query)

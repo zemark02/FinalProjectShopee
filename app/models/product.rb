@@ -36,7 +36,7 @@ class Product < ApplicationRecord
     query = <<-SQL
     SELECT *
     FROM products
-    WHERE name LIKE "%#{name}%"
+    WHERE name LIKE %#{name}%
     SQL
     result = Product.find_by_sql(query)
     # result = ActiveRecord::Base.connection.execute(query)
