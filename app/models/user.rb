@@ -116,7 +116,7 @@ class User < ApplicationRecord
     query = <<-SQL
     SELECT t.tagname , p.id , p.name ,p.price,p.description,p.quantity,p.updated_at
     FROM products p , has_tags ht , tags t , follows f
-    WHERE p.id = ht.product_id and ht.tag_id = t.id and f.following_id = p.store_id and f.followee_id = "#{self.id}" 
+    WHERE p.id = ht.product_id and ht.tag_id = t.id and f.following_id = p.store_id and f.followee_id = #{self.id}
     order by t.tagname
     SQL
 
