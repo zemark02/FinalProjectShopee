@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[ show edit destroy ]
   after_action :set_default_img_product , only: %i[create]
   before_action :logged_in_for_buy ,except: %i[]
+
 
 
   def logged_in_for_buy
@@ -50,13 +51,25 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
+    @product = Product.find(params.require(:product)[:id])
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: "Product was successfully updated." }
-        format.json { render :show, status: :ok, location: @product }
+        @product.tags.destroy_all
+        @product.match_tags.destroy_all
+        tag = params[:product][:tags]
+        check = false
+
+        if(["Food", "Electronic", "Vehicle", "Fashion", "Health & Beauty", "Voucher", "other"].include? tag )
+          t = Tag.create(tagname:tag)
+          HasTag.create(tag_id:t.id,product_id:@product.id)
+        else
+          t = Tag.create(tagname:"other")
+          HasTag.create(tag_id:t.id,product_id:@product.id)
+        end
+        format.html { redirect_to request.referrer}
+
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -111,6 +124,9 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:name, :price, :description, :quantity, :store_id,img_products: [])
     end
+
+
+
 
     def set_default_img_product
       if(!@product.img_products.attached?)

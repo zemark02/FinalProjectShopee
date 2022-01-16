@@ -28,9 +28,54 @@ class User < ApplicationRecord
 
 
 
-  # validates :name, :email, :password, presence: true , length: { minimum: 2 }
-  validates :password, confirmation: { case_sensitive: true }
 
+  def check_password_confimation(password,password_confirmation)
+    if(password == password_confirmation)
+      return true
+    else
+      errors.add(:password,"doesn't match with password confirmation")
+      errors.add(:password_confirmation,"doesn't match with password ")
+      return false
+    end
+  end
+
+  def check_update_email(id,email)
+    if(User.find_by_email(email))
+       u = User.find_by_email(email)
+       if(u.id != id)
+         errors.add(:email,"already exists")
+         return false
+       else
+         return true
+       end
+    else
+      return true
+    end
+  end
+
+  def check_update_username(id,username)
+    if(User.find_by_username(username))
+       u = User.find_by_username(username)
+       if(u.id != id)
+         errors.add(:username,"already exists")
+         return false
+       else
+         return true
+       end
+    else
+      return true
+    end
+  end
+
+  def check_update_password(password,password_confirmation)
+    if(password != password_confirmation)
+      errors.add(:password,"doesn't match with password confirmation")
+      errors.add(:password_confirmation,"doesn't match with password ")
+      return false
+    else
+      return true
+    end
+  end
 
   def check_email
     if(User.find_by_email(self.email))
@@ -95,7 +140,7 @@ class User < ApplicationRecord
 
   def getProductFromCart
     query = <<-SQL
-    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart
+    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart,contain.id
     FROM products product , carts cart , contains contain
     WHERE "#{self.id}" = cart.user_id AND contain.cart_id = cart.id AND contain.product_id = product.id
 

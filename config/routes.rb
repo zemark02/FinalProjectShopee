@@ -18,5 +18,14 @@ Rails.application.routes.draw do
   get '/search' , to:"products#search"
   post 'checkout' , to:"users#checkout"
   post 'rate' , to:"products#rate" , as: :rate
+  post '/updateProduct' , to:"products#update"
+  post '/updateInfo/:id' , to: 'users#updateInfo'
+  get '/updateInfo/:id' , to: 'users#profile'
+  post '/updateAddress/:id' ,to: 'users#updateAddress'
+  get '/updateAddress/:id' , to: 'users#profile'
+  post '/updatePassword/:id' ,to: 'users#updatePassword'
+  get '/updatePassword/:id' , to: 'users#profile'
+  post '/stores/:id' , to:"stores#update"
+  post '/delFormCart' ,to:"users#deleteProductFromCart"
 
 end

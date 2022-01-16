@@ -1,4 +1,4 @@
-#btn-edit-profile-store{
+#btn-edit-profile-store {
   color:#888;
 }
 #btn-edit-profile-store:hover{
@@ -33,12 +33,12 @@
 
 }
 
-#underline-profile-store-right{
+#underline-profile-store-right , #underline-adrress-store-right{
   color: #9e9d9d !important;
 }
 
-#block-profile-store ,#block-detail-my-product,#block-detail-sale-record{
-  background: white;
+#block-profile-store ,#block-detail-my-product,#block-detail-sale-record,#block-address-store{
+  background: white !important;
 }
 
 .text-field-edit-profile-info{
@@ -76,7 +76,7 @@ input[class="form-check-input radio_buttons optional text-field-edit-profile-inf
   margin-top:  0.7em;
 }
 
-#btn-save-edit-profile-store{
+#btn-save-edit-profile-store , #btn-save-edit-address-store{
   background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
   color:white;
 }
@@ -114,7 +114,7 @@ a {
   cursor: pointer;
 }
 
-#showFormAddProduct{
+#showFormAddProduct , .updateProduct{
   line-height: 35px;
 }
 
@@ -159,11 +159,16 @@ a {
   cursor: pointer;
 }
 
-#showFormAddProduct .check_boxes label{
-  cursor: pointer;
-}
+
+
 
 #showFormAddProduct .form-check input[class="form-check-input check_boxes optional check-box-tag"]:checked{
+  background: orange;
+  border:orange;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+.updateProduct .form-check input[class="form-check-input check_boxes optional check-box-tag"]:checked{
   background: orange;
   border:orange;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
@@ -172,4 +177,11 @@ a {
 #btn-my-store:hover{
   cursor: default !important;
 
+}
+
+.color-active-nav{
+  color:#ee4d2d !important;
+}
+.action-edit-product:hover{
+  cursor: pointer !important;
 }

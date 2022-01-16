@@ -5,11 +5,44 @@ body{
   color: #ee4d2d !important;
 }
 
-#btn-check-out{
+.btn-check-out{
   background-color:#ee4d2d;
   color:white;
   border-color:#ee4d2d;
   padding-left: 50px;
   padding-right: 50px;
   border-radius: 0;
+}
+.btn-check-out:hover{
+  color:white !important;
+}
+#modal-check-out{
+  margin-top: 15%;
+}
+
+#btn-show-product-from-cart{
+  text-decoration: none;
+}
+
+
+.btn-show-product-from-cart{
+  text-decoration: none;
+}
+.btn-show-product-from-cart:hover{
+  color:#ee4d2d !important;
+}
+
+.btn-show-product-from-cart:active{
+  background-color: #e0e0e0 !important;
+  color:#ee4d2d !important;
+}
+.delFromCart:hover{
+  color:#ee4d2d !important;
+
+}
+
+
+.delFromCart:active{
+  background-color: #e0e0e0 !important;
+  color:#ee4d2d !important;
 }

@@ -21,12 +21,12 @@
                 %a.nav-link#my-profile-store{ }
                   %i.bi.bi-person#person-icon
                   My profile store
-                %div.ms-5#nav-tab-profile-store
+                %div.ms-5#nav-tab-my-profile-store
                   %ul.nav.flex-column.fs-6
                     %li.nav-item
-                      %a.nav-link.tab-profile-store{} Profile
+                      %a.nav-link.tab-profile-store#nav-tab-profile-store{} Profile
                     %li.nav-item
-                      %a.nav-link.tab-profile-store{ } Address
+                      %a.nav-link.tab-profile-store#nav-tab-address-store{ } Address
 
 
               %li.nav-item
@@ -36,7 +36,7 @@
                 %div.ms-5#nav-tab-my-store
                   %ul.nav.flex-column.fs-6
                     %li.nav-item
-                      %a.nav-link.tab-profile-store#nav-tab-my-product{href:"/shop/#{@store.id}"} View my store
+                      %a.nav-link.tab-profile-store#nav-tab-view-my-store{href:"/shop/#{@store.id}"} View my store
                     %li.nav-item
                       %a.nav-link.tab-profile-store#nav-tab-my-product{} My product
                     %li.nav-item
@@ -52,6 +52,7 @@
             %p.fs-6 Manage and protect your store
             %hr#underline-profile-store-right
 
+          %p.ms-4#notice=  notice
           = simple_form_for(@store,method: :patch, url: "/stores/#{@store.id}") do |f|
             = f.error_notification
             = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
@@ -69,8 +70,49 @@
                     %span{style:"display:none;"}
                       = f.file_field :avatar
 
+              .form-actions
+                = f.button :submit ,'Save' ,class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-profile-store-click" ,hidden:true
+                .btn#btn-save-edit-profile-store.mt-2.ms-5.mb-5{"data-bs-target":"#modal-confirmation-edit-profile-store" ,"data-bs-toggle":"modal"} Save
+
+                %div.modal.fade.modal-confirmation-info{id:"modal-confirmation-edit-profile-store"}
+                  %div.modal-dialog
+                    %div.modal-content
+                      %div.modal-header
+                        %h5.modal-title Edit profile store confirmation
+                        %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                      %div.modal-body
+                        %h6 Are you sure to edit profile store ?
+                      %div.modal-footer
+                        .btn.btn-edit-info-yes#edit-profile-store-confirm Yes
+      .row#detail-address-store
+        .col.col-10#block-address-store.ms-2
+          %div.mt-4.ms-3
+            %h3 My Address Store
+            %p.fs-6 Manage and protect your store
+            %hr#underline-adrress-store-right
+          = simple_form_for(@store,method: :patch, url: "/stores/#{@store.id}") do |f|
+            = f.error_notification
+            = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+            .form-inputs
+              .row
+                .col.col-8.ps-5
+                  = f.input :address_store , label: 'Adress Store', placeholder: 'Enter your adress store' ,input_html: { class: 'text-field-edit-profile-info' }
+
+                .col.col-4
             .form-actions
-              = f.button :submit ,'Save' ,{class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-profile-store"}
+              = f.button :submit ,'Save' ,class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-address-store-click",hidden:true
+              .btn#btn-save-edit-address-store.mt-2.ms-5.mb-5{"data-bs-target":"#modal-confirmation-edit-address-store" ,"data-bs-toggle":"modal"} Save
+
+              %div.modal.fade.modal-confirmation-info{id:"modal-confirmation-edit-address-store"}
+                %div.modal-dialog
+                  %div.modal-content
+                    %div.modal-header
+                      %h5.modal-title Edit address store confirmation
+                      %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                    %div.modal-body
+                      %h6 Are you sure to edit address store ?
+                    %div.modal-footer
+                      .btn.btn-edit-info-yes#edit-address-store-confirm Yes
 
       .row#detail-my-store
         =render(:partial => "showMyProduct" , :locals => {:@store=>@store,:@product=>@product })
@@ -84,20 +126,52 @@
   $(document).ready(function(){
 
     $("#detail-profile-store").hide();
-    $("#nav-tab-profile-store").hide();
+    $("#nav-tab-my-profile-store").hide();
     $("#block-detail-sale-record").hide();
+    $("#nav-tab-my-product").addClass("color-active-nav");
+    $("#detail-address-store").hide();
+
+
+    $("#nav-tab-address-store").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-address-store").addClass("color-active-nav")
+      $("#detail-address-store").show(500);
+      $("#nav-tab-my-profile-store").show(500);
+      $("#detail-profile-store").hide(500);
+      $("#detail-my-store").hide(500);
+      $("#nav-tab-my-store").hide(500);
+
+    })
+    $("#nav-tab-profile-store").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-profile-store").addClass("color-active-nav");
+      $("#nav-tab-my-profile-store").show(500);
+      $("#detail-profile-store").show(500);
+      $("#detail-my-store").hide(500);
+      $("#nav-tab-my-store").hide(500);
+      $("#detail-address-store").hide(500);
+
+    })
 
     $("#my-store").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-my-product").addClass("color-active-nav");
       $("#detail-my-store").show(500);
+      $("#block-detail-my-product").show(500);
       $("#nav-tab-my-store").show(500);
-      $("#nav-tab-profile-store").hide(500);
+      $("#block-detail-sale-record").hide(500);
+      $("#nav-tab-my-profile-store").hide(500);
       $("#detail-profile-store").hide(500);
+      $("#detail-address-store").hide(500);
     })
 
     $("#nav-tab-sale-record").click(function(){
-      $("#nav-tab-profile-store").hide(500);
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-sale-record").addClass("color-active-nav");
+      $("#nav-tab-my-profile-store").hide(500);
       $("#detail-profile-store").hide();
       $("#block-detail-my-product").hide();
+      $("#detail-address-store").hide();
       $("#detail-my-store").show(500);
       $("#nav-tab-my-store").show(500);
       $("#block-detail-sale-record").show(500);
@@ -105,27 +179,45 @@
 
     })
     $("#my-profile-store").click(function(){
-      $("#nav-tab-profile-store").show(500);
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-profile-store").addClass("color-active-nav");
+      $("#nav-tab-my-profile-store").show(500);
       $("#detail-profile-store").show(500);
       $("#detail-my-store").hide(500);
       $("#nav-tab-my-store").hide(500);
+      $("#detail-address-store").hide(500);
     })
 
     $("#btn-edit-profile-store").click(function(){
-      $("#nav-tab-profile-store").show(500);
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-profile-store").addClass("color-active-nav");
+      $("#nav-tab-my-profile-store").show(500);
       $("#detail-profile-store").show(500);
       $("#detail-my-store").hide(500);
       $("#nav-tab-my-store").hide(500);
+      $("#detail-address-store").hide(500);
     })
 
     $("#nav-tab-my-product").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#nav-tab-my-product").addClass("color-active-nav");
       $("#detail-my-store").show(500);
       $("#nav-tab-my-store").show(500);
       $("#block-detail-my-product").show(500);
-      $("#nav-tab-profile-store").hide(500);
+      $("#nav-tab-my-profile-store").hide(500);
       $("#detail-profile-store").hide();
       $("#block-detail-sale-record").hide();
+      $("#detail-address-store").hide(500);
     })
+
+    $("#edit-profile-store-confirm").click(function(){
+      $("#btn-save-edit-profile-store-click").focus().click();
+    })
+
+    $("#edit-address-store-confirm").click(function(){
+      $("#btn-save-edit-address-store-click").focus().click();
+    })
+
 
 
   })

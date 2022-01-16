@@ -19,20 +19,20 @@
 
             %ul.nav.flex-column.fs-6
               %li.nav-item
-                %a.nav-link#my-account{ }
+                %a.nav-link#my-account
                   %i.bi.bi-person#person-icon
                   My account
                 %div.ms-5#nav-tab-profile
                   %ul.nav.flex-column.fs-6
                     %li.nav-item
-                      %a.nav-link.active.tab-profile{"aria-current" => "page", :href => "#"} Profile
+                      %a.nav-link.active.tab-profile#btn-nav-profile Profile
                     %li.nav-item
-                      %a.nav-link.tab-profile{ } Address
+                      %a.nav-link.tab-profile#btn-nav-address Address
                     %li.nav-item
-                      %a.nav-link.tab-profile{ } Change password
+                      %a.nav-link.tab-profile#btn-nav-change-password Change password
 
               %li.nav-item
-                %a.nav-link#my-purchase{ }
+                %a.nav-link#my-purchase
                   %i.bi.bi-cash#cash-icon
                   My purchase
 
@@ -45,7 +45,8 @@
             %h3 My Profile
             %p.fs-6 Manage and protect your account
             %hr#underline-profile-right
-          = simple_form_for(@userEdit,method: :patch, url: "/users/#{session[:user_id]}") do |f|
+          %p.ms-4#notice=  notice
+          = simple_form_for(@userEditProfile,method: :post, url: "/updateInfo/#{session[:user_id]}") do |f|
             = f.error_notification
             = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
             .form-inputs
@@ -65,7 +66,80 @@
                       = f.file_field :avatar
 
             .form-actions
-              = f.button :submit ,'Save' ,{class:"btn mt-2 ms-5 mb-5",id:"btn-save-edit-profile"}
+              = f.button :submit ,'Save' ,class:"btn mt-2 ms-5 mb-5",id:"btn-save-profile",hidden:true
+              .btn#btn-save-edit-profile.ms-5.mb-3.mt-2{"data-bs-target":"#modal-confirmation-edit-profile","data-bs-toggle":"modal"} Save
+
+              %div.modal.fade.modal-confirmation-info{id:"modal-confirmation-edit-profile"}
+                %div.modal-dialog
+                  %div.modal-content
+                    %div.modal-header
+                      %h5.modal-title Edit profile confirmation
+                      %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                    %div.modal-body
+                      %h6 Are you sure to edit profile ?
+                    %div.modal-footer
+                      .btn.btn-edit-info-yes#edit-profile-confirm Yes
+      .row#detail-address
+        .col.col-10#block-address.ms-2
+          %div.mt-4.ms-3
+            %h3 My Address
+            %p.fs-6 Manage and protect your account
+            %hr#underline-address-right
+
+          = simple_form_for(@userEditAddress,method: :post, url: "/updateAddress/#{session[:user_id]}") do |f|
+            = f.error_notification
+            = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+            .form-inputs
+              .row
+                .col.col-8.ps-5#block-address-second
+                  = f.input :address , label: 'Address', placeholder: 'Enter your address' ,input_html: { class: 'text-field-edit-profile-info' }
+
+            .form-actions
+              = f.button :submit ,'Save' ,class:"btn mt-2 ms-5 mb-5",id:"btn-save-address",hidden:true
+              .btn#btn-save-edit-address.ms-5.mb-3.mt-2{"data-bs-target":"#modal-confirmation-edit-address","data-bs-toggle":"modal"} Save
+
+              %div.modal.fade.modal-confirmation-info{id:"modal-confirmation-edit-address"}
+                %div.modal-dialog
+                  %div.modal-content
+                    %div.modal-header
+                      %h5.modal-title Edit profile confirmation
+                      %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                    %div.modal-body
+                      %h6 Are you sure to edit address ?
+                    %div.modal-footer
+                      .btn.btn-edit-info-yes#edit-address-confirm Yes
+      .row#detail-password
+        .col.col-10#block-password.ms-2
+          %div.mt-4.ms-3
+            %h3 My Password
+            %p.fs-6 Manage and protect your account
+            %hr#underline-address-right
+
+          = simple_form_for(@userEditPassword,method: :post, url: "/updatePassword/#{session[:user_id]}") do |f|
+            = f.error_notification
+            = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+            .form-inputs
+              .row
+                .col.col-8.ps-5#block-address-second
+                  = f.input :password , label: 'Password', placeholder: 'Enter your password' ,input_html: { class: 'text-field-edit-profile-info' }
+                  = f.input :password_confirmation , label: 'Password Confirmation', placeholder: 'Enter your password confirmation' ,input_html: { class: 'text-field-edit-profile-info' }
+
+            .form-actions
+              = f.button :submit ,'Save' ,class:"btn mt-2 ms-5 mb-5",id:"btn-save-password",hidden:true
+              .btn#btn-save-edit-password.ms-5.mb-3.mt-2{"data-bs-target":"#modal-confirmation-edit-password","data-bs-toggle":"modal"} Save
+
+              %div.modal.fade.modal-confirmation-info{id:"modal-confirmation-edit-password"}
+                %div.modal-dialog
+                  %div.modal-content
+                    %div.modal-header
+                      %h5.modal-title Edit password confirmation
+                      %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                    %div.modal-body
+                      %h6 Are you sure to change your password ?
+                    %div.modal-footer
+                      .btn.btn-edit-info-yes#edit-password-confirm Yes
+
+
 
       .row#detail-my-purchase
         .col.col-10.border.border-1#block-purchase.ms-2
@@ -159,7 +233,6 @@
 :javascript
 
   $(document).ready(function(){
-
     $(".click-to-rate").click(function(){
       var product_id = $(this).attr("product-id");
       var order_line_item_id = $(this).attr("order_line_item_id");
@@ -169,22 +242,80 @@
     })
 
     $("#detail-my-purchase").hide();
+    $("#detail-address").hide();
+    $("#detail-password").hide();
+    $("#btn-nav-profile").addClass("color-active-nav");
+
+    $("#btn-nav-profile").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#btn-nav-profile").addClass("color-active-nav");
+      $("#nav-tab-profile").show(500);
+      $("#detail-profile").show(500);
+      $("#detail-my-purchase").hide(500);
+      $("#detail-address").hide(500);
+      $("#detail-password").hide(500);
+    })
+    $("#btn-nav-change-password").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#btn-nav-change-password").addClass("color-active-nav");
+      $("#nav-tab-profile").show(500);
+      $("#detail-password").show(500);
+      $("#detail-profile").hide(500);
+      $("#detail-my-purchase").hide(500);
+      $("#detail-address").hide(500);
+    })
+
+    $("#btn-nav-address").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#btn-nav-address").addClass("color-active-nav");
+      $("#nav-tab-profile").show(500);
+      $("#detail-password").hide(500);
+      $("#detail-profile").hide(500);
+      $("#detail-my-purchase").hide(500);
+      $("#detail-address").show(500);
+    })
 
     $("#my-purchase").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#my-purchase").addClass("color-active-nav");
       $("#nav-tab-profile").hide(500);
       $("#detail-profile").hide(500);
       $("#detail-my-purchase").show(500);
+      $("#detail-address").hide(500);
+      $("#detail-password").hide(500);
     })
+
     $("#my-account").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#btn-nav-profile").addClass("color-active-nav");
       $("#nav-tab-profile").show(500);
       $("#detail-profile").show(500);
       $("#detail-my-purchase").hide(500);
+      $("#detail-address").hide(500);
+      $("#detail-password").hide(500);
     })
 
     $("#btn-edit-profile").click(function(){
+      $(".nav-link").removeClass("color-active-nav");
+      $("#btn-nav-profile").addClass("color-active-nav");
       $("#nav-tab-profile").show(500);
       $("#detail-profile").show(500);
       $("#detail-my-purchase").hide(500);
+      $("#detail-address").hide(500);
+      $("#detail-password").hide(500);
+    })
+
+    $(document).ready(function(){
+      $("#edit-profile-confirm").click(function(){
+        $("#btn-save-profile").focus().click();
+      })
+      $("#edit-address-confirm").click(function(){
+        $("#btn-save-address").focus().click();
+      })
+
+      $("#edit-password-confirm").click(function(){
+        $("#btn-save-password").focus().click();
+      })
     })
 
 

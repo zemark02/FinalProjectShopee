@@ -37,7 +37,11 @@
   color: #9e9d9d !important;
 }
 
-#block-profile ,#block-purchase{
+#underline-address-right{
+  color: #9e9d9d !important;
+}
+
+#block-profile ,#block-purchase,#block-address,#block-password{
   background: white;
 }
 
@@ -76,7 +80,36 @@ input[class="form-check-input radio_buttons optional text-field-edit-profile-inf
   margin-top:  0.7em;
 }
 
+
+
+
 #btn-save-edit-profile{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+}
+
+.btn-edit-info-yes{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 0;
+}
+
+.btn-edit-info-yes:hover{
+  color:white;
+}
+
+.modal-confirmation-info{
+    margin-top: 15%;
+}
+
+#btn-save-edit-address{
+  background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
+  color:white;
+}
+
+#btn-save-edit-password{
   background-image: linear-gradient(45deg, #FF5A00, #FFAE00) !important ;
   color:white;
 }
@@ -85,9 +118,12 @@ input[class="form-check-input radio_buttons optional text-field-edit-profile-inf
   border-right: 1px solid #f0f0f0;
 }
 
+
+
 #block-profile input[id="user_avatar"]{
   width:250px;
 }
+
 
 a {
   cursor: pointer;

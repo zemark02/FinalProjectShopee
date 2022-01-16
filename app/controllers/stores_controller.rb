@@ -41,7 +41,9 @@ class StoresController < ApplicationController
   # PATCH/PUT /stores/1 or /stores/1.json
   def update
     @store.update(store_params)
-    redirect_to request.referrer
+    respond_to do |format|
+      format.html { redirect_to "/myStore/#{@store.id}" ,notice: "Profile store was successfully updated."}
+    end
 
 
   end
@@ -67,11 +69,13 @@ class StoresController < ApplicationController
   end
 
   def showOtherShop
+
     @otherShop = Store.find(params[:id])
     @user = User.find(session[:user_id])
     @check_following = @user.followings.pluck("id").include?(@otherShop.id)
     @getTagAndProduct = @otherShop.getTagAndProduct
     @getScoreShop = @otherShop.getScoreShop
+
 
 
 

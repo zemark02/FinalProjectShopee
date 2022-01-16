@@ -41,7 +41,18 @@
                     =p[4]
 
                   %td.fs-6.text-center.align-middle.p-4.pe-5
-                    = "..."
+                    %i.bi.bi-three-dots.menu-threedots.fs-6{"data-bs-toggle":"dropdown" }
+                    .dropdown-menu
+
+                      %a.btn-show-product-from-cart.fs-6.dropdown-item{href:"/product/#{p[0]}"}
+                        %span.mb-0.fs-6 show product
+                        %span.bi.fs-6.bi-box-arrow-in-up-right.ms-2
+                      =button_to "/delFormCart" ,method: :post , class:"dropdown-item delFromCart" , params:{id:p[5]} do
+                        %p.p-0.m-0.fs-6
+                          delete product
+                          %i.bi.bi-trash.ms-2
+
+
                   -c = c + 1
           .row
             .col-7
@@ -51,7 +62,21 @@
                 = @sum
                 ="Baht"
             .col-2
-              = button_to "check out", checkout_url, method: :post ,class:"btn ",id:"btn-check-out" ,params: { checkout:@checkout }
+              = button_to "check out", checkout_url, method: :post ,class:"btn ",id:"btn-yes-checkout" ,params: { checkout:@checkout },hidden:true
+              .btn.btn-check-out{"data-bs-toggle":"modal" ,"data-bs-target":"#modal-check-out"} check out
+
+              %div.modal.fade{id:"modal-check-out"}
+                %div.modal-dialog
+                  %div.modal-content
+                    %div.modal-header
+                      %h5.modal-title Check out confirmation
+                      %btn.btn-close.fs-6{"data-bs-dismiss":"modal"}
+                    %div.modal-body
+                      %h6 Are you sure to buy these ?
+                    %div.modal-footer
+                      .btn.btn-check-out#btn-confirmation-checkout Yes
+
+
 
 
 
@@ -62,3 +87,10 @@
 
 
     .col-1
+
+:javascript
+  $(document).ready(function(){
+    $("#btn-confirmation-checkout").click(function(){
+      $("#btn-yes-checkout").focus().click();
+    })
+  })

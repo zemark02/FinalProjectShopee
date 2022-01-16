@@ -1,1 +1,33 @@
 .container-fluid.mt-3
+  .row
+    .col-1
+    .col-10{style:"background-color:white;"}
+      -if(!(@followings.count == 0))
+        %h3.mt-3 My Followings
+        %hr.mt-3.mb-3
+        -c_store = 0
+        -while(c_store < @followings.count)
+          .row
+            -@followings[c_store..c_store + 2].each do |store|
+              .col-4
+                .row
+                  .col-4.pt-3.pb-3.ps-5
+                    .row#div-profile-otherShop{style:"height:120px;width:25.5rem;"}
+                      .col.col-4
+                        %a{href:"/shop/#{store.id}"}
+                          =image_tag store.avatar , disabled:true ,class:"rounded-circle border border-1 mt-4 ms-3", style:"width:4rem;height:4rem;"
+                      .col.col-8
+                        %a{href:"/shop/#{store.id}",style:"text-decoration:none !important;"}
+                          %h3.mt-4.text-light
+                            =store.name
+                        = button_to setFollow_url, method: :post ,class:"btn btn-warning " ,params: { checkFollow:true,shopId:store.id } do
+                          %span.bi.bi-person-check{style:"font-size:18px"}
+                            Following
+          -c_store = c_store + 3
+
+
+      -else
+        %h3.mt-3 My Followings
+        %hr.mt-3.mb-3
+        %h4.text-center.mt-5.mb-5 No Followings yet
+    .col-1

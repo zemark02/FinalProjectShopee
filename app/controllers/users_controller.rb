@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy showFollow feed cart follow]
   before_action :landing_page, only: [:new,:index ,:create ]
   after_action :set_default_avatar , only: %i[create]
-  before_action :logged_in , only: %i[index show profile feed showFollow follow cart]
+  before_action :logged_in , only: %i[index show profile feed showFollow follow cart updateInfo updateAddress updatePassword]
   before_action :logged_in_for_buy ,only: %i[cart checkout updateCart]
   # GET /users or /users.json
   def index
@@ -16,26 +16,24 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1 or /users/1.json
-  def show
-  end
+
+
 
   # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
-  def edit
-  end
+
 
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
     check_username = @user.check_username
     check_email = @user.check_email
+    check_password_confimation = @user.check_password_confimation(params[:user][:password],params[:user][:password_confirmation])
     respond_to do |format|
-      if check_email && check_username && @user.save
+      if check_password_confimation && check_email && check_username && @user.save
         Cart.create(user_id:@user.id)
         format.html { redirect_to '/login' , notice: "User was successfully created."}
       else
@@ -45,13 +43,20 @@ class UsersController < ApplicationController
   end
 
   # PATCH/PUT /users/1 or /users/1.json
-  def update
-    @userEdit = User.find(session[:user_id])
+  def updateInfo
+    @user = User.find(session[:user_id])
+    @userEditProfile = User.find(session[:user_id])
+    @userEditAddress = User.find(session[:user_id])
+    @userEditPassword = User.find(session[:user_id])
+    check_update_email = @userEditProfile.check_update_email(session[:user_id],params[:user][:email])
+    check_update_user = @userEditProfile.check_update_username(session[:user_id],params[:user][:username])
+    @userEditProfile.email = params[:user][:email]
+    @userEditProfile.username = params[:user][:username]
 
 
     respond_to do |format|
-      if @userEdit.update(user_params_update_info)
-        format.html { render :profile, status: :unprocessable_entity  }
+      if check_update_user && check_update_email &&  @userEditProfile.update(user_params_update_info)
+        format.html { redirect_to request.referrer , notice: "Profile was successfully changed." }
       else
         format.html { render :profile, status: :unprocessable_entity }
       end
@@ -59,6 +64,39 @@ class UsersController < ApplicationController
 
   end
 
+  def updateAddress
+    @user = User.find(session[:user_id])
+    @userEditProfile = User.find(session[:user_id])
+    @userEditAddress = User.find(session[:user_id])
+    @userEditPassword = User.find(session[:user_id])
+    @userEditAddress.address = params[:user][:address]
+
+
+    respond_to do |format|
+      if @userEditAddress.save
+        format.html { redirect_to request.referrer , notice: "Address was successfully changed."}
+      end
+    end
+  end
+
+  def updatePassword
+    @user = User.find(session[:user_id])
+    @userEditProfile = User.find(session[:user_id])
+    @userEditAddress = User.find(session[:user_id])
+    @userEditPassword = User.find(session[:user_id])
+    check_update_password = @userEditPassword.check_update_password(params[:user][:password],params[:user][:password_confirmation])
+    @userEditPassword.password = params[:user]["password"]
+
+    respond_to do |format|
+      if check_update_password && @userEditPassword.save
+        format.html { redirect_to request.referrer , notice: "Passord was successfully changed."}
+      else
+        format.html { render :profile, status: :unprocessable_entity }
+      end
+    end
+
+
+  end
 
   # DELETE /users/1 or /users/1.json
   def destroy
@@ -71,7 +109,10 @@ class UsersController < ApplicationController
   def profile
 
     @user = User.find(params[:id])
-    @userEdit = User.find(params[:id])
+    @userEditProfile = User.find(params[:id])
+    @userEditAddress = User.find(params[:id])
+    @userEditPassword = User.find(params[:id])
+
 
   end
   def feed
@@ -79,9 +120,7 @@ class UsersController < ApplicationController
     @getTagAndProduct = @user.getProductFromStoreFollowing
   end
 
-  def showFollow
 
-  end
 
   def followUpdate
 
@@ -119,6 +158,7 @@ class UsersController < ApplicationController
 
   def follow
     @userFollowing = @user.followings
+    @followings = @user.followings
 
   end
 
@@ -139,6 +179,13 @@ class UsersController < ApplicationController
     redirect_to request.referrer
 
 
+
+  end
+
+  def deleteProductFromCart
+    contain = Contain.find(params[:id])
+    contain.destroy
+    redirect_to request.referrer
 
   end
 

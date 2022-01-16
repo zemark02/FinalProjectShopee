@@ -34,6 +34,12 @@
             .col-9
               .fs-5{style:"color:rgba(0, 0, 0, 0.55) !important;ps-0;line-height:28px"}
                 = "#{@product.description}"
+          .row.mt-4
+            .col-2.ms-3.pt-1
+              .fs-5 ship from:
+            .col-9
+              .fs-5{style:"color:rgba(0, 0, 0, 0.55) !important;ps-0;line-height:28px"}
+                = "#{@store.address_store}"
 
           .row.mt-4
             .col-2.ms-3.pt-1
@@ -91,7 +97,7 @@
                   =@store.name
               -if(@following)
                 = button_to setFollow_url, method: :post ,class:"btn btn-warning " ,params: { checkFollow:@following,shopId:@store.id } do
-                  %span.bi.bi-person-check{style:"font-size:10px"}
+                  %span.bi.bi-person-check{style:"font-size:17px"}
                     Following
               -elsif(session[:user_id] == @store.user_id)
                 .btn.btn-warning#btn-my-store
@@ -99,7 +105,7 @@
                     My Store
               -else
                 = button_to setFollow_url, method: :post ,class:"btn btn-light " ,params: { checkFollow:@following,shopId:@store.id } do
-                  %span{style:"font-size:10px"}
+                  %span{style:"font-size:17px"}
                   + Follow
         .col-7
           .row.mt-4
@@ -140,10 +146,12 @@
     .col-7{style:"background:white"}
       %h2.p-5.pb-2 Comment
       %hr
+      -check = true
       -@order_line_items.each do |olt|
         -rate = olt.match_rate
         -if(rate != nil)
           -@user = User.find(rate.user_id)
+          -check = false
           .row
             .col-2.text-end
               =image_tag @user.avatar ,class:"rounded" ,style:"width:5rem;height:5rem"
@@ -151,42 +159,42 @@
               %div.fs-4.mt-2.mb-2{style:"line-hight:10px "}
                 =@user.name
               -if(rate.rate_score == 1)
-                %div.fs-4.mb-2
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
+                %div.fs-4.mb-2.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
               -if(rate.rate_score == 2)
-                %div.fs-4.mb-2
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
+                %div.fs-4.mb-2.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
               -if(rate.rate_score == 3)
-                %div.fs-4.mb-2
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star.fs-5
-                  %span.bi.bi-star.fs-5
+                %div.fs-4.mb-2.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
+                  %span.bi.bi-star.fs-5.star-comment
               -if(rate.rate_score == 4)
-                %div.fs-4.mb-2
+                %div.fs-4.mb-2.star-comment
                   %span.bi.bi-star-fill.fs-5.text-warning
                   %span.bi.bi-star-fill.fs-5.text-warning
                   %span.bi.bi-star-fill.fs-5.text-warning
                   %span.bi.bi-star-fill.fs-5.text-warning
                   %span.bi.bi-star.fs-5
               -if(rate.rate_score == 5)
-                %div.fs-4.mb-2
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
-                  %span.bi.bi-star-fill.fs-5.text-warning
+                %div.fs-4.mb-2.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
+                  %span.bi.bi-star-fill.fs-5.text-warning.star-comment
               %div.text-muted.fs-4
-                %p.bi.bi-clock
+                %p.bi.bi-clock.star-comment
                   =rate.created_at.strftime('%-d %b %Y')
 
           .row
@@ -195,6 +203,8 @@
               %p.fs-5.mt-2
                 =rate.comment
           %hr
+      -if(check)
+        %h3.text-center.mb-5.mt-5 No Comment
     .col-4
 
 :javascript
@@ -202,8 +212,6 @@
     $("#btn-plus").click(function(){
       val = parseInt($("#quantity").attr("value"))+1;
       max = parseInt($("#quantity").attr("max"))
-      console.log(val)
-      console.log(max)
       if(val > max ) val = max
       $("#quantity").prop("readonly",false)
       $("#quantity").attr("value",val)

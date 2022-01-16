@@ -1,5 +1,5 @@
 .col.col-10.border.border-1#block-detail-my-product.ms-2
-  .btn.btn-lg.mt-4.ms-2.btn-add-product{href:"#" ,"data-bs-target":"#showFormAddProduct", "data-bs-toggle":"modal"} Add Product
+  .btn.btn-lg.mt-4.ms-2.btn-add-product{"data-bs-target":"#showFormAddProduct", "data-bs-toggle":"modal"} Add Product
   %hr
   -if(@store.products.count != 0)
     %table.table.table-hover
@@ -13,10 +13,11 @@
           %th.fs-6.text-center.pb-3{:scope => "col"} Product description
           %th.fs-6.text-center.pb-3{:scope => "col"}
 
-          %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Actions
+          %th.fs-6.text-center.pb-3.pe-5{:scope => "col"} Edit
       %tbody
         - c = 1
         -@store.products.each do |p|
+
           %tr
             %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
               = c
@@ -36,10 +37,41 @@
               =p.description
 
             %td.fs-6.text-center.align-middle.p-4.pe-5
-              = "..."
+              %i.bi.bi-three-dots.menu-threedots.fs-6{"data-bs-target":"#updateProduct#{c}", "data-bs-toggle":"modal"}
+            %div.modal.fade.updateProduct{id:"updateProduct#{c}"}
+              %div.modal-dialog
+                %div.modal-content
+                  %div.modal-header
+                    %h5.modal-title Update Product
+                    %btn.btn-close{"data-bs-dismiss":"modal"}
+                  %div.modal-body
+                    %div.form-group
+                      = simple_form_for(p, method: :post, url: "/updateProduct") do |f|
+                        .form-inputs
+                          = f.input :id,input_html: { hidden: true ,value:p.id},label:false
+                          = f.input :name ,class:"form-control",input_html: { class: 'text-field-edit-profile-info', maxlength: 18 }
+                          = f.input :price ,class:"form-control",input_html: { class: 'text-field-edit-profile-info numbersOnly' ,min:0 }
+                          = f.input :quantity ,class:"form-control",input_html: { class: 'text-field-edit-profile-info numbersOnly' ,min:0}
+                          = f.input :description ,class:"form-control" , as: :text,input_html: { class: 'text-field-edit-profile-info',maxlength:160}
+                          = f.label :img_products ,"Select picture products"
+                          = f.file_field :img_products ,class:"form-control mt-0 mb-2" ,multiple:true,input_html: { class: 'text-field-edit-profile-info' }
+
+                          = f.input :tags , as: :radio_buttons, collection: ['Food','Electronic','Vehicle','Fashion','Health & Beauty','Voucher','other']
+
+
+
+                          = f.button :submit ,"Update Product",class:" btn-modal-create-product mt-2"
             -c = c + 1
+
+
   -else
     %h3.text-center.mt-5.mb-5 No have Product
+
+
+
+
+
+
 
 .col.col-10.border.border-1#block-detail-sale-record.ms-2
   %p.fs-2.mt-4.ms-3.mb-4 Sale Record
@@ -76,11 +108,10 @@
               =@product2.description
             %td.fs-6.text-center.align-middle.p-4
               =sold
-
-
             -c = c + 1
+
   -else
-    %h3.text-center.mt-5.mb-5 No Orders yet
+    %h3.text-center.mt-5.mb-5 No orders yet
 
 
 
@@ -96,10 +127,10 @@
           = simple_form_for(@product, method: :post, url: "/products") do |f|
             .form-inputs
               = f.association :store,selected:@store.id ,input_html: { hidden: true },label:false
-              = f.input :name ,class:"form-control"
-              = f.input :price ,class:"form-control"
-              = f.input :quantity ,class:"form-control"
-              = f.input :description ,class:"form-control" , as: :text,input_html:{class:"description-text-area"}
+              = f.input :name ,class:"form-control",input_html:{ maxlength: 18}
+              = f.input :price ,class:"form-control",input_html:{class:"numbersOnly"}
+              = f.input :quantity ,class:"form-control",input_html:{class:"numbersOnly"}
+              = f.input :description ,class:"form-control" , as: :text,input_html:{class:"description-text-area" ,maxlength:160}
               = f.label :img_products ,"Select picture products"
               = f.file_field :img_products ,class:"form-control mt-0 mb-2" ,multiple:true
 
@@ -111,7 +142,15 @@
 
 :javascript
   $(document).ready(function(){
+    $(".numbersOnly").keyup(function () {
+      this.value = this.value.replace(/[^0-9\.]/g,'');
+    });
+
+    $("input").removeClass("is-valid");
     $("#nav-tab-add-product").click(function(){
       $(".btn-add-product").focus().click();
+
     })
+
+
   })
