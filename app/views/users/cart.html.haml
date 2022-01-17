@@ -24,6 +24,7 @@
             %tbody
               - c = 1
               -@getProductFromCart.each do |p|
+                -puts "----------------------------------------#{p}-----------------------------------------------------------------------------------------"
                 %tr
                   %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
                     = c
