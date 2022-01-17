@@ -92,8 +92,8 @@
 
       %tbody
         - c = 1
-        -@saleRecord.each do |p_id , sold|
-          -@product2 = Product.find(p_id)
+        -@saleRecord.each do |data|
+          -@product2 = Product.find(data["product_id"])
           %tr
             %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
               = c
@@ -107,7 +107,7 @@
             %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
               =@product2.description
             %td.fs-6.text-center.align-middle.p-4
-              =sold
+              =data["sum"]
             -c = c + 1
 
   -else
