@@ -171,7 +171,7 @@ class UsersController < ApplicationController
       puts "-------------------------------------------------#{data.class}------------------------------------------------"
       puts "-------------------------------------------------#{data}------------------------------------------------"
       OrderLineItem.create(product_id:data.product_id,order_id:order.id,quantity:data.quantity_product_cart,price:Product.find(data.product_id).price)
-      @product = Product.find(p_id)
+      @product = Product.find(data.product_id)
       @product.quantity = @product.quantity - data.quantity_product_cart
       @product.save
     end
