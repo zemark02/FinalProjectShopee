@@ -71,7 +71,7 @@ class Product < ApplicationRecord
 
     result = ActiveRecord::Base.connection.execute(query)
     arr = result.to_a
-    if(arr.length == 0 || arr[0].length == 0 || arr[0][0].length == nil)
+    if(arr.length == 0 || arr[0].length == 0 || arr[0][0] == nil)
       return 0
     end
     return arr[0][0]
