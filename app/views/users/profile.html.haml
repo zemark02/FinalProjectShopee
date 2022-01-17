@@ -173,6 +173,7 @@
                             -order_line_item.product.img_products.all.each do |img|
 
                               =image_tag img , style:"width:7rem;height:7rem;"
+                              -break
                           %td.fs-6.text-center.align-middle.p-4
                             =order_line_item.product.name
                           %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}

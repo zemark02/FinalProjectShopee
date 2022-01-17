@@ -6,6 +6,7 @@
         .col-4
           -@product.img_products.all.each do |img|
             =image_tag(img,style:"height:35rem;width:30rem;",class:"ms-2 mt-2 ")
+            -break
         .col-7.ms-3#detail-product-show-product
           %h1.mt-4.mb-2
             =@product.name

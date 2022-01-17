@@ -15,6 +15,7 @@
                 .card
                   -product.img_products.all.each do |img|
                     =image_tag(img,class:"img card-img-top card-img")
+                    -break
                   .card-body
                     %h6.text-card-title-otherShop.card-title
                       = product.name

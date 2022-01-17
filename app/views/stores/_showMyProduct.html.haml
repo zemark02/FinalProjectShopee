@@ -24,6 +24,7 @@
             %td.fs-6.text-center.align-middle.p-4
               -p.img_products.all.each do |img|
                 =image_tag img , style:"width:7rem;height:7rem;"
+                -break
             %td.fs-6.text-center.align-middle.p-4
               =p.name
             %td.fs-6.text-center.align-middle.p-4
@@ -100,6 +101,7 @@
             %td.fs-6.text-center.align-middle.p-4
               -@product2.img_products.all.each do |img|
                 =image_tag img , style:"width:7rem;height:7rem;"
+                -break
             %td.fs-6.text-center.align-middle.p-4
               =@product2.name
             %td.fs-6.text-center.align-middle.p-4
