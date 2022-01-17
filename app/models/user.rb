@@ -140,7 +140,7 @@ class User < ApplicationRecord
 
   def getProductFromCart
     query = <<-SQL
-    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart,contain.id AS total
+    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart AS total,contain.id AS contain_id 
     FROM products product , carts cart , contains contain
     WHERE cart.user_id = #{self.id}  AND contain.cart_id = cart.id AND contain.product_id = product.id
 

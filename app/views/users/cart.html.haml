@@ -29,26 +29,26 @@
                   %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
                     = c
                   %td.fs-6.text-center.align-middle.p-4
-                    -Product.find(p.id).img_products.all.each do |img|
+                    -Product.find(p["id"]).img_products.all.each do |img|
 
                       =image_tag img , style:"width:7rem;height:7rem;"
                   %td.fs-6.text-center.align-middle.p-4
-                    =p.name
+                    =p["name"]
                   %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
-                    =p.description
+                    =p["description"]
                   %td.fs-6.text-center.align-middle.p-4
-                    =p.quantity_product_cart
+                    =p["quantity_product_cart"]
                   %td.fs-6.text-center.align-middle.p-4
-                    =Product.find(p.id).price * p.quantity_product_cart
+                    =p["total"]
 
                   %td.fs-6.text-center.align-middle.p-4.pe-5
                     %i.bi.bi-three-dots.menu-threedots.fs-6{"data-bs-toggle":"dropdown" }
                     .dropdown-menu
 
-                      %a.btn-show-product-from-cart.fs-6.dropdown-item{href:"/product/#{p[0]}"}
+                      %a.btn-show-product-from-cart.fs-6.dropdown-item{href:"/product/#{p["id"]}"}
                         %span.mb-0.fs-6 show product
                         %span.bi.fs-6.bi-box-arrow-in-up-right.ms-2
-                      =button_to "/delFormCart" ,method: :post , class:"dropdown-item delFromCart" , params:{id:p[5]} do
+                      =button_to "/delFormCart" ,method: :post , class:"dropdown-item delFromCart" , params:{id:p["contain_id"]} do
                         %p.p-0.m-0.fs-6
                           delete product
                           %i.bi.bi-trash.ms-2
