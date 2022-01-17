@@ -125,13 +125,13 @@ class User < ApplicationRecord
     arr = result.to_a
     result = Hash.new
     (0..arr.count-1).to_a.each do |index|
-      arr[index][arr[index].count-1] = arr[index].last.strftime("%B #{arr[index].last.day.ordinalize}, %Y")
+      arr[index].updated_at = arr[index].updated_at.strftime("%B #{arr[index].last.day.ordinalize}, %Y")
     end
     arr.each do |res|
-      if(result.has_key?res[0])
-        result[res[0]].push(res[1..])
+      if(result.has_key?res['tagname'])
+        result[res['tagname']].push(res)
       else
-        result[res[0]] = [res[1..]]
+        result[res['tagname']] = [res]
       end
     end
 
@@ -140,7 +140,7 @@ class User < ApplicationRecord
 
   def getProductFromCart
     query = <<-SQL
-    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart AS total,contain.id AS contain_id 
+    SELECT product.id,product.name,product.description,contain.quantity_product_cart,product.price *  contain.quantity_product_cart AS total,contain.id AS contain_id
     FROM products product , carts cart , contains contain
     WHERE cart.user_id = #{self.id}  AND contain.cart_id = cart.id AND contain.product_id = product.id
 
