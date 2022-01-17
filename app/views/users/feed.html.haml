@@ -13,20 +13,20 @@
           -while index < @getTagAndProduct[tag].count
             .row.mt-3
               -@getTagAndProduct[tag][index..index+5].each do |product|
-                -puts "--------------------------------#{product}---------------------------------------" 
+                -puts "--------------------------------#{product}---------------------------------------"
                 .col.col-2
-                  %a.card-fav-list{href:"/product/#{product.id}"}
+                  %a.card-fav-list{href:"/product/#{product["id"]}"}
                     .card
                       -Product.find(product.id).img_products.all.each do |img|
                         =image_tag(img,class:"img card-img-top card-img")
                       .card-body
                         %h6.text-card-title-otherShop.card-title
-                          = product.name
+                          = product["name"]
                         %p.card-text
-                          =product.description
+                          =product["description"]
                       .card-footer
                         %h5
-                          =product.price
+                          =product["price"]
                           =" Baht"
             -index = index + 6
       -else
