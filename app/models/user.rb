@@ -128,7 +128,7 @@ class User < ApplicationRecord
             puts "----------------------------------------------1.-----  #{arr[index]}----------------------------------"
       puts "----------------------------------------------2.-----  #{arr[index]["updated_at"]}----------------------------------"
 
-      arr[index]["updated_at"] = arr[index].updated_at.strftime("%B #{arr[index]["updated_at"].day.ordinalize}, %Y")
+      arr[index]["updated_at"] = arr[index]["updated_at"].strftime("%B #{arr[index]["updated_at"].day.ordinalize}, %Y")
     end
     arr.each do |res|
       if(result.has_key?res['tagname'])
