@@ -222,7 +222,9 @@ class UsersController < ApplicationController
 
     def totalProduct(product)
       sum = 0
+      puts "================================#{product}======================================"
       product.each do p
+        puts "--------------------------------#{p}-----------------------------------------"
         if(p["total"] != nil )
           sum = sum + p["total"]
         end
