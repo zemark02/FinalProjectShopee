@@ -164,7 +164,6 @@ class UsersController < ApplicationController
 
   def checkout
     @user = User.find(session[:user_id])
-    puts "-++++++++++++++++++++++++++++++++++++++++++-----#{product}-++++++++++++++++++++++++++++++++++++++++++++++++++++"
     product = JSON(params[:checkout])
 
     puts "-----------------------------------#{product}-++++++++++++++++++++++++++++++++++++++++++++++++++++"
