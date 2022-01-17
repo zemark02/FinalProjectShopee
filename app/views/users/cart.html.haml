@@ -29,17 +29,17 @@
                   %th.fs-6.text-center.align-middle.p-4{:scope => "row",style:"align-self:center"}
                     = c
                   %td.fs-6.text-center.align-middle.p-4
-                    -Product.find(p[0]).img_products.all.each do |img|
+                    -Product.find(p.id).img_products.all.each do |img|
 
                       =image_tag img , style:"width:7rem;height:7rem;"
                   %td.fs-6.text-center.align-middle.p-4
-                    =p[1]
+                    =p.name
                   %td.fs-6.text-center.align-middle.p-4{:colspan => "2"}
-                    =p[2]
+                    =p.description
                   %td.fs-6.text-center.align-middle.p-4
-                    =p[3]
+                    =p.quantity_product_cart
                   %td.fs-6.text-center.align-middle.p-4
-                    =p[4]
+                    =Product.find(p.id).price * p.quantity_product_cart
 
                   %td.fs-6.text-center.align-middle.p-4.pe-5
                     %i.bi.bi-three-dots.menu-threedots.fs-6{"data-bs-toggle":"dropdown" }
