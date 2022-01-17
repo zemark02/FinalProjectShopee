@@ -222,6 +222,7 @@ class UsersController < ApplicationController
 
     def totalProduct(product)
       sum = 0
+      puts "====================================#{product}==================================="
       product.each do |id,name,desc,quan,price,c_id|
         if(price.class == Integer || price.class == Float )
           sum = sum + Integer(price)
