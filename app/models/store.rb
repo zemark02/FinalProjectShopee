@@ -41,13 +41,13 @@ class Store < ApplicationRecord
     arr = result.to_a
     result = Hash.new
     (0..arr.count-1).to_a.each do |index|
-      arr[index][arr[index].count-1] = arr[index].last.strftime("%B #{arr[index].last.day.ordinalize}, %Y")
+      arr[index]["updated_at"] = arr[index]["updated_at"].strftime("%B #{arr[index]["updated_at"].day.ordinalize}, %Y")
     end
     arr.each do |res|
       if(result.has_key?res[0])
-        result[res[0]].push(res[1..])
+        result[res[0]].push(res)
       else
-        result[res[0]] = [res[1..]]
+        result[res[0]] = [res]
       end
     end
 
