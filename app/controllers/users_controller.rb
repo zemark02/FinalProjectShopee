@@ -164,14 +164,13 @@ class UsersController < ApplicationController
 
   def checkout
     @user = User.find(session[:user_id])
-    product = JSON(params[:checkout])
+    cart = Cart.find(@user.cart.id)
 
-    puts "-----------------------------------#{product}-++++++++++++++++++++++++++++++++++++++++++++++++++++"
     order = Order.create(user_id:@user.id)
-    product.each do |p_id,p_name,p_desc,p_quantity,p_price|
-      OrderLineItem.create(product_id:p_id,order_id:order.id,quantity:p_quantity,price:p_price)
+    cart.match_products.each do |data|
+      OrderLineItem.create(product_id:data.product_id,order_id:order.id,quantity:data.quantity_product_cart,price:Product.find(data.product_id).price)
       @product = Product.find(p_id)
-      @product.quantity = @product.quantity - p_quantity
+      @product.quantity = @product.quantity - data.quantity_product_cart
       @product.save
     end
 
