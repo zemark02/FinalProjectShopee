@@ -223,7 +223,7 @@ class UsersController < ApplicationController
     def totalProduct(product)
       sum = 0
       product.each do p
-        if(p["total"] != nil && [Integer,Float].include?(p["total"].class))
+        if(p["total"] != nil )
           sum = sum + p["total"]
         end
       end
