@@ -168,6 +168,8 @@ class UsersController < ApplicationController
 
     order = Order.create(user_id:@user.id)
     cart.match_products.each do |data|
+      puts "-------------------------------------------------#{data.class}------------------------------------------------"
+      puts "-------------------------------------------------#{data}------------------------------------------------"
       OrderLineItem.create(product_id:data.product_id,order_id:order.id,quantity:data.quantity_product_cart,price:Product.find(data.product_id).price)
       @product = Product.find(p_id)
       @product.quantity = @product.quantity - data.quantity_product_cart
