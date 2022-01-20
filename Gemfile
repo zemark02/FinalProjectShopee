@@ -63,5 +63,6 @@ gem 'haml-rails'
 gem 'simple_form'
 gem 'bcrypt'
 gem 'rexml'
+gem "aws-sdk-s3", require: false
 
 gem 'pg'
