@@ -71,10 +71,11 @@ class Product < ApplicationRecord
 
     result = ActiveRecord::Base.connection.execute(query)
     arr = result.to_a
-    if(arr.length == 0 || arr[0].length == 0 || arr[0]["sum"] == nil)
+    puts "---------------------#{arr}--------------------------------------------------"
+    if(arr.length == 0 || arr[0].length == 0 || arr[0]["count"] == nil)
       return 0
     end
-    return arr[0]["sum"]
+    return arr[0]["count"]
   end
 
 
