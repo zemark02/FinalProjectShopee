@@ -51,9 +51,12 @@ class Product < ApplicationRecord
     SQL
     result = ActiveRecord::Base.connection.execute(query)
     arr = result.to_a
+    puts "--------------arr = --------------------#{arr}-------------------------------------------------------------"
     if(arr.length == 0 || arr[0][0] == nil || arr[0][1] == 0)
+      puts "-----------------------------------------------func Error-----------------------------"
       result = 0
     else
+      puts "------------------------------------------------func #{arr[0][0],arr[0][1]}"
       result = (Float(arr[0][0]) / arr[0][1]).round(1)
 
     end

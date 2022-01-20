@@ -89,10 +89,13 @@ class ProductsController < ApplicationController
     @store = @product.store
     @following = Follow.find_by(followee_id:@user.id,following_id:@store.id)
     @order_line_items = @product.order_line_items
+
     @score = @product.getScoreProduct
     @sold = OrderLineItem.where(product_id:@product.id).count
     @numComment = @product.getNumComment
     @rateStore = @store.getScoreShop
+    puts "---score = --------------------------#{@score}-------------------------------------------------"
+    puts "---rateShop = ------------------------#{@rateStore}----------------------------------------------"
 
   end
 
