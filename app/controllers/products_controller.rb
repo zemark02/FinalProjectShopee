@@ -94,8 +94,6 @@ class ProductsController < ApplicationController
     @sold = OrderLineItem.where(product_id:@product.id).count
     @numComment = @product.getNumComment
     @rateStore = @store.getScoreShop
-    puts "---score = --------------------------#{@score}-------------------------------------------------"
-    puts "---rateShop = ------------------------#{@rateStore}----------------------------------------------"
 
   end
 
