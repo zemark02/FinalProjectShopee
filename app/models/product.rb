@@ -56,7 +56,6 @@ class Product < ApplicationRecord
       puts "-----------------------------------------------func Error-----------------------------"
       result = 0
     else
-      puts "------------------------------------------------func #{arr[0][0],arr[0][1]}"
       result = (Float(arr[0][0]) / arr[0][1]).round(1)
 
     end
